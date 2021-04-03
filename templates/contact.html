@@ -17,38 +17,24 @@
                     <div class="card-body">
                         <form action="{% url 'contact' %}" method="post">
                             {% csrf_token %}
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <label class="text-black">Name</label>
-                                    <input class="form-control" name="name" type="text"
-                                           value="{{request.user.name}}">
-                                </div>
+                            <div class="form-outline mb-3">
+                                <input type="text" class="form-control" value="{{request.user.name}}" name="name"/>
+                                <label class="form-label">Name</label>
                             </div>
 
-                            <div class="row form-group">
-
-                                <div class="col-md-12">
-                                    <label class="text-black">Email</label>
-                                    <input class="form-control" name="email" type="email"
-                                           value="{{request.user.email}}">
-                                </div>
+                            <div class="form-outline mb-3">
+                                <input type="text" class="form-control" value="{{request.user.email}}" name="email"/>
+                                <label class="form-label">Email</label>
                             </div>
 
-                            <div class="row form-group">
-
-                                <div class="col-md-12">
-                                    <label class="text-black">Subject</label>
-                                    <input class="form-control" name="subject" type="subject" autofocus>
-                                </div>
+                            <div class="form-outline mb-3">
+                                <input type="text" class="form-control" name="subject"/>
+                                <label class="form-label">Subject</label>
                             </div>
 
-                            <div class="row form-group">
-                                <div class="col-md-12 mb-3">
-                                    <label class="text-black">Message</label>
-                                    <textarea class="form-control" cols="30" name="message" name="message"
-                                              placeholder="Write your notes or questions here..."
-                                              rows="7"></textarea>
-                                </div>
+                            <div class="form-outline mb-3">
+                                <textarea type="text" class="form-control" name="message" rows="5"></textarea>
+                                <label class="form-label">Message</label>
                             </div>
 
                             <div class="row form-group">
