@@ -142,7 +142,7 @@ def contact_view(request):
         message = request.POST['message']
 
         send_mail(
-            subject + " from " + name + " " + email_add,
+            subject + ' from ' + name,
             message,
             email_add,
             ['officialjobland777@gmail.com', ],
