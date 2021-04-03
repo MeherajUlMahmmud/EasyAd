@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mt-4">
+            <div class="card mb-4 mt-4">
+                <div class="card-header">
+                    Login to Your Account
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-outline mb-3">
+                            {{ form.email|add_class:"form-control"|attr:"autofocus" }}
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="form-outline mb-3">
+                            {{ form.password|add_class:"form-control" }}
+                            {{ form.password.errors }}
+                        </div>
+
+                        <div class="row form-group mb-4">
+                            <div class="col-md-12 mb-3 mb-md-0">
+                                <input type="submit" value="Login" class="btn px-4 btn-primary form-control text-white">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var form_fields = document.getElementsByTagName("input");
+
+    form_fields[1].placeholder = 'Email Address';
+    form_fields[2].placeholder = 'Password';
+
+</script>
+
+{% endblock %}
