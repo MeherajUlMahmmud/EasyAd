@@ -46,7 +46,7 @@ class OrderModel(models.Model):
     customer = models.ForeignKey(CustomerModel, null=True, blank=True, on_delete=models.CASCADE)
     advertise = models.ForeignKey(AdvertiseModel, null=True, blank=True, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
-    duration = models.IntegerField(max_length=10)
+    duration = models.IntegerField()
     price_rate = models.CharField(max_length=30, choices=PRICE_RATE_TYPE_CHOICES)
     total_cost = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     is_paid = models.BooleanField(default=False)
