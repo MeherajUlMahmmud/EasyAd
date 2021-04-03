@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- NAVBAR -->
+<!--<header class="site-navbar mt-3">-->
+<!--    <div class="container-fluid">-->
+<!--    </div>-->
+<!--</header>-->
+
+<!-- HOME -->
+<!--<section class="home-section section-hero overlay bg-image" id="home-section"-->
+<!--         style="background-image: url({% static 'assets/images/bg.jpg' %}); width: 100%">-->
+<!--<img alt="icon" class="img-responsive" src="{% static 'assets/images/bg.jpg' %}">-->
+<!-- Jumbotron -->
+<div class="bg-image p-5 text-center shadow-1-strong rounded mb-5 text-white"
+     style="background-image: url('https://mdbcdn.b-cdn.net/img/new/slides/003.jpg'); height: 100vh;">
+    <h1 class="font-weight-bold mt-5 mb-5">Lorem ipsum dolor sit amet, consectetur elit, sed do tempo
+        ut labore et do</h1>
+
+
+    <div class="row mb-5 mt-5">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <p class="h3 text-white">For Advertisers</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+                Elit ut aliquam purus sit amet luctus.</p>
+            <a href="{% url 'advertiser-register' %}"
+               class="btn btn-primary btn-lg btn-block text-center text-white">
+                <i class="fas fa-plus me-2"></i>Sign Up and Advertise Empty Space</a>
+
+
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <p class="h3 text-white">For Business Owners</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut et magna
+                aliqua. Elit ut aliquam purus sit amet luctus.</p>
+            <a href="{% url 'customer-register' %}"
+               class="btn btn-primary btn-lg btn-block text-center text-white btn-search">
+                <i class="fas fa-search me-2"></i>Sign Up and Find Empty Space</a>
+        </div>
+    </div>
+</div>
+<!-- Jumbotron -->
+
+
+<section class="home-section section-hero overlay bg-image" id="home-section">
+
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-12">
+                <div class="mb-5 text-center">
+                    <h1 class="text-dark font-weight-bold">Lorem ipsum dolor sit amet, consectetur elit, sed do tempo
+                        ut labore et do</h1>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
