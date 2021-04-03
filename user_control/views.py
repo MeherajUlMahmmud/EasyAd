@@ -123,10 +123,9 @@ def advertiser_dashboard(request):
 def customer_dashboard(request):
     ad_queryset = AdvertiseModel.objects.all()
     ad_list = list(ad_queryset)
-    recent_ads = ad_list[0:3]
 
     context = {
-        'recent_ads': recent_ads[:3],
+        'recent_ads': ad_list[:3],
     }
     return render(request, 'user_control/customer/customer-dashboard.html', context)
 
