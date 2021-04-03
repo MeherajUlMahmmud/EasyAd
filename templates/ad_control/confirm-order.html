@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mt-4">
+            <div class="card my-4">
+                <div class="col-lg-12">
+                    <div class="card-header">
+                        <h3 class="text-black">Order Confirmation</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.media }}
+
+                            {{form.is_paid.as_hidden}}
+                            {{form.is_active.as_hidden}}
+                            {{form.is_approved.as_hidden}}
+                            {{form.is_running.as_hidden}}
+
+                            <div class="row form-group">
+                                <div class="col-md-12 mb-3">
+                                    <label class="small">Upload Your Banner</label>
+                                    {{ form.image|add_class:"form-control" }}
+                                    {% for error in form.image.errors %}
+                                    <li class="small text-danger">{{ error }}
+                                    </li>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+
+                            <div class="row form-group">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="small">Duration of Ad</label>
+                                        {{ form.duration|add_class:"form-control" }}
+                                        {% for error in form.duration.errors %}
+                                        <li class="small text-danger">{{ error }}
+                                        </li>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="small">Ad Rate</label>
+                                        {{ form.price_rate|add_class:"form-control" }}
+                                        {% for error in form.price_rate.errors %}
+                                        <li class="small text-danger">{{ error }}
+                                        </li>
+                                        {% endfor %}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!--                            <button type="submit" class="btn btn-success btn-lg btn-block">-->
+                            <!--                                Save Order and Go to Checkout Page-->
+                            <!--                            </button>-->
+
+                            <a class="btn btn-success btn-lg btn-block" href="{% url 'checkout'  %}">
+                                Save Order and Go to Checkout Page
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mt-4">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
