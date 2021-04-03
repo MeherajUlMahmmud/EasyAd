@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8 mt-4">
+            <div class="card my-4">
+                <div class="col-lg-12">
+                    <div class="card-header">
+                        <h3 class="text-black">Contact Us</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'contact' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <label class="text-black">Name</label>
+                                    <input class="form-control" name="name" type="text"
+                                           value="{{request.user.name}}">
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+
+                                <div class="col-md-12">
+                                    <label class="text-black">Email</label>
+                                    <input class="form-control" name="email" type="email"
+                                           value="{{request.user.email}}">
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+
+                                <div class="col-md-12">
+                                    <label class="text-black">Subject</label>
+                                    <input class="form-control" name="subject" type="subject" autofocus>
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <label class="text-black">Message</label>
+                                    <textarea class="form-control" cols="30" name="message" name="message"
+                                              placeholder="Write your notes or questions here..."
+                                              rows="7"></textarea>
+                                </div>
+                            </div>
+
+                            <!--                    <div class="row form-group">-->
+                            <!--                        <div class="col-md-12">-->
+                            <!--                            <button class="btn btn-block btn-primary btn-md" type="submit">Send</button>-->
+                            <!--                        </div>-->
+                            <!--                    </div>-->
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- /.row -->
+</div>
+
+{% endblock %}
