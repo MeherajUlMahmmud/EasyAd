@@ -2,44 +2,69 @@
 {% load widget_tweaks %}
 
 {% block content %}
+<!--<style>-->
+<!--.login-form {-->
+<!--    width: 340px;-->
+<!--    margin: 50px auto;-->
+<!--  	font-size: 15px;-->
+<!--}-->
+<!--.login-form form {-->
+<!--    margin-bottom: 15px;-->
+<!--    background: #f7f7f7;-->
+<!--    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);-->
+<!--    padding: 30px;-->
+<!--}-->
+<!--.login-form h2 {-->
+<!--    margin: 0 0 15px;-->
+<!--}-->
+<!--.form-control, .btn {-->
+<!--    min-height: 38px;-->
+<!--    border-radius: 2px;-->
+<!--}-->
+<!--.btn {-->
+<!--    font-size: 15px;-->
+<!--    font-weight: bold;-->
+<!--}-->
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 mt-4">
-            <div class="card mb-4 mt-4">
-                <div class="card-header">
-                    Login to Your Account
-                </div>
-                <div class="card-body">
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="form-outline mb-3">
-                            {{ form.email|add_class:"form-control"|attr:"autofocus" }}
-                            {{ form.email.errors }}
-                        </div>
-                        <div class="form-outline mb-3">
-                            {{ form.password|add_class:"form-control" }}
-                            {{ form.password.errors }}
-                        </div>
+<!--</style>-->
 
-                        <div class="row form-group mb-4">
-                            <div class="col-md-12 mb-3 mb-md-0">
-                                <input type="submit" value="Login" class="btn px-4 btn-primary form-control text-white">
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
+<div class="login-form" style="width: 340px;
+    margin: 50px auto;
+  	font-size: 15px;">
+    <form method="post" style="
+    margin-bottom: 15px;
+    background: #f7f7f7;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 30px;">
+        {% csrf_token %}
+        <h2 class="text-center mb-2">Log in</h2>
+        <div class="form-group mb-3">
+            {{ form.email|add_class:"form-control"|attr:"autofocus" }}
+            {{ form.email.errors }}
         </div>
-    </div>
+        <div class="form-group mb-3">
+            {{ form.password|add_class:"form-control" }}
+            {{ form.password.errors }}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </div>
+    </form>
 </div>
+<hr/>
 
 <script>
     var form_fields = document.getElementsByTagName("input");
 
     form_fields[1].placeholder = 'Email Address';
     form_fields[2].placeholder = 'Password';
+
+
+
+
+
+
+
 
 </script>
 
