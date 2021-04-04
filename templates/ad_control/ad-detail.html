@@ -57,61 +57,61 @@
             <div class="row">
 
                 {% if request.user == ad_item.user %}
-                <div class="col-6">
-                    <a href="#" class="btn btn-block btn-primary btn-md">Edit Ad</a>
-                </div>
-                <div class="col-6">
-                    <a href="#" class="btn btn-block btn-primary btn-md">Orders</a>
-                </div>
+                    <div class="col-6">
+                        <a href="#" class="btn btn-block btn-primary btn-md">Edit Ad</a>
+                    </div>
+                    <div class="col-6">
+                        <a href="#" class="btn btn-block btn-primary btn-md">Orders</a>
+                    </div>
 
-                <br/><br/><br/>
+                    <br/><br/><br/>
 
-                <div class="col-6">
+                    <div class="col-6">
                     <a href="#" class="btn btn-block btn-outline-danger btn-md">
                         Delete Ad</a>
                 </div>
 
-                {% if ad_item.is_active %}
-                <div class="col-6">
-                    <form method="GET">
-                        <input class="btn btn-block btn-outline-danger btn-md" name="deactivateAd" type="submit"
-                               value="Deactivate Ad"/>
-                    </form>
-                </div>
-                {% else %}
-                <div class="col-6">
-                    <form method="GET">
-                        <input class="btn btn-block btn-outline-success btn-md" name="activateAd" type="submit"
-                               value="Activate Ad"/>
-                    </form>
-                </div>
-                {% endif %}
-
-                {% else %}
-                <div class="col-md-12">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Contact</h5>
-                            <p class="card-text">
-                                <strong>Phone: </strong>{{ ad_item.user.AdvertiserModel.phone }}<br/>
-                                <strong>Email: </strong><a href="mailto:{{ ad_item.user.email }}">{{ ad_item.user.email }}</a>
-                            </p>
-                        </div>
+                    {% if ad_item.is_active %}
+                    <div class="col-6">
+                        <form method="GET">
+                            <input class="btn btn-block btn-outline-danger btn-md" name="deactivateAd" type="submit"
+                                   value="Deactivate Ad"/>
+                        </form>
                     </div>
+                    {% else %}
+                    <div class="col-6">
+                        <form method="GET">
+                            <input class="btn btn-block btn-outline-success btn-md" name="activateAd" type="submit"
+                                   value="Activate Ad"/>
+                        </form>
+                    </div>
+                    {% endif %}
 
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <div class="col-12">
-                            {% if customer_ordered is not None %}
-                            <button class="btn btn-block btn-outline-danger " type="submit">Cancel Order
-                            </button>
-                            {% else %}
-                            <a class="btn btn-block btn-primary" href="{% url 'confirm-order' ad_item.id %}">Order
-                                Now</a>
-                            {% endif %}
+                {% else %}
+                    <div class="col-md-12">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Contact {{ ad_item.advertisement_type }} Owner</h5>
+                                <p class="card-text">
+                                    <strong>Phone: </strong>{{ ad_item.user.AdvertiserModel.phone }}<br/>
+                                    <strong>Email: </strong><a href="mailto:{{ ad_item.user.email }}">{{ ad_item.user.email }}</a>
+                                </p>
+                            </div>
                         </div>
-                    </form>
-                </div>
+
+                        <form method="GET" action="">
+                            <div class="col-12">
+                                {% if customer_ordered is not None %}
+                                <button class="btn btn-block btn-outline-danger" name="cancelOrder"
+                                        type="submit">Cancel Order
+                                </button>
+                                {% else %}
+                                <a class="btn btn-block btn-primary" href="{% url 'confirm-order' ad_item.id %}">Order
+                                    Now</a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
                 {% endif %}
             </div>
 
