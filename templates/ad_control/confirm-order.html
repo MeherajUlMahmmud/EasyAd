@@ -10,17 +10,12 @@
             <div class="card my-4">
                 <div class="col-lg-12">
                     <div class="card-header">
-                        <h3 class="text-black">Order Confirmation</h3>
+                        <h3 class="text-black">Order Information</h3>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.media }}
-
-                            {{form.is_paid.as_hidden}}
-                            {{form.is_active.as_hidden}}
-                            {{form.is_approved.as_hidden}}
-                            {{form.is_running.as_hidden}}
 
                             <div class="row form-group">
                                 <div class="col-md-12 mb-3">
@@ -32,7 +27,6 @@
                                     {% endfor %}
                                 </div>
                             </div>
-
 
                             <div class="row form-group">
                                 <div class="row">
@@ -57,13 +51,13 @@
                                 </div>
                             </div>
 
-                            <!--                            <button type="submit" class="btn btn-success btn-lg btn-block">-->
-                            <!--                                Save Order and Go to Checkout Page-->
-                            <!--                            </button>-->
+                            <button type="submit" class="btn btn-success btn-lg btn-block">
+                                Save Order
+                            </button>
 
-                            <a class="btn btn-success btn-lg btn-block" href="{% url 'checkout'  %}">
-                                Save Order and Go to Checkout Page
-                            </a>
+                            <!--                            <a class="btn btn-success btn-lg btn-block" href="{% url 'checkout'  %}">-->
+                            <!--                                Save Order-->
+                            <!--                            </a>-->
                         </form>
                     </div>
                 </div>
@@ -71,8 +65,55 @@
         </div>
 
         <div class="col-md-4 mt-4">
+            <div class="card my-4 border border-primary shadow-0 ">
+                <div class="card-header h4">Total Cost</div>
+                <div class="card-body">
+                    <p class="card-text fs-1 h2">
+                        <span id="totalAmount">0.00</span> BDT
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+
+var duration = document.querySelector('#duration');
+var price_rate = document.querySelector('#price_rate');
+var span = document.getElementById("totalAmount");
+var total = 0.00
+
+// handle click and add class
+duration.addEventListener("input", () => {
+    total = 0.00
+    console.log(price_rate.value)
+    if (price_rate.value === "Day") {
+        total += duration.value
+    } else if (price_rate.value === "Month"){
+        total += duration.value * 30
+    }
+
+    total = total * {{ ad_item.price }}
+    // console.log(duration.value)
+    span.textContent = total;
+})
+
+price_rate.addEventListener("input", () => {
+    total = 0.00
+    console.log(price_rate.value)
+    if (price_rate.value === "Day") {
+        total += duration.value
+    } else if (price_rate.value === "Month"){
+        total += duration.value * 30
+    }
+
+    total = total * {{ ad_item.price }}
+    // console.log(duration.value)
+    span.textContent = total;
+})
+
+
+</script>
 
 {% endblock %}
