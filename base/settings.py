@@ -17,9 +17,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -96,6 +93,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
