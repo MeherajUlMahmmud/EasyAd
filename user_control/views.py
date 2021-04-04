@@ -121,10 +121,16 @@ def advertiser_dashboard(request):
 
 @show_to_customer(allowed_roles=['admin', 'is_customer'])
 def customer_dashboard(request):
-    ad_queryset = AdvertiseModel.objects.all()
+    ad_queryset = AdvertiseModel.objects.filter(is_active=True)
     ad_list = list(ad_queryset)
 
+    customer = CustomerModel.objects.get(user=request.user)
+    order_queryset = OrderModel.objects.filter(customer=customer)
+    order_list = list(order_queryset)
+    pending_orders = [item for item in order_list if not item.is_approved]
     context = {
+        'order_list': order_list,
+        'pending_orders': pending_orders,
         'recent_ads': ad_list[:3],
     }
     return render(request, 'user_control/customer/customer-dashboard.html', context)
