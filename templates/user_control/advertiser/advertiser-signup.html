@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-6 mt-2">
             <div class="card mb-4 mt-4">
-                <div class="card-header text-center">
+                <div class="card-header text-center note-success">
                     Create An Advertiser Account
                 </div>
                 <div class="card-body">
@@ -16,10 +16,11 @@
                         <div class="row form-group">
                             <div class="col-md-12 mb-3 mb-md-0">
                                 {{ advertiser_form.email|add_class:"form-control"|attr:"autofocus" }}
-                                {% for error in advertiser_form.email.errors %}
-                                <li class="small text-danger">{{ error }}
-                                </li>
-                                {% endfor %}
+                                <ul class='form-errors list-group mb-1 mt-1'>
+                                    {% for error in advertiser_form.email.errors %}
+                                    <li class="small list-group-item list-group-item-danger">{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                                 <p class="small mt-1">{{ advertiser_form.email.help_text|safe }}</p>
                             </div>
                         </div>
@@ -27,13 +28,17 @@
                         <div class="row form-group mb-3">
                             <div class="col-md-12 mb-3 mb-md-0">
                                 {{ advertiser_form.name|add_class:"form-control" }}
-                                {{ advertiser_form.name.errors }}
                             </div>
                         </div>
 
                         <div class="row form-group">
                             <div class="col-md-12 mb-3 mb-md-0">
                                 {{ advertiser_form.password1|add_class:"form-control" }}
+                                <ul class='form-errors list-group mb-1 mt-1'>
+                                    {% for error in advertiser_form.password1.errors %}
+                                    <li class="small list-group-item list-group-item-danger">{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                                 <p class="small">{{ advertiser_form.password1.help_text|safe }}</p>
                             </div>
                         </div>
@@ -41,10 +46,11 @@
                         <div class="row form-group">
                             <div class="col-md-12 mb-3 mb-md-0">
                                 {{ advertiser_form.password2|add_class:"form-control" }}
-                                {% for error in advertiser_form.password2.errors %}
-                                <li class="small text-danger">{{ error }}
-                                </li>
-                                {% endfor %}
+                                <ul class='form-errors list-group mb-1 mt-1'>
+                                    {% for error in advertiser_form.password2.errors %}
+                                    <li class="small list-group-item list-group-item-danger">{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
                                 <p class="small mt-1">{{ advertiser_form.password2.help_text|safe }}</p>
                             </div>
                         </div>
@@ -53,7 +59,8 @@
                             <div class="col-md-12 mb-3 mb-md-0">
                                 <input class="agree-term" id="agree-term" name="check" type="checkbox" required/>
                                 <label class="label-agree-term" for="agree-term">
-                                    I agree to all statements in <a class="term-service" href="#">Terms of service</a>
+                                    I agree to all statements in <a class="term-service" target="_blank" href="#">Terms of
+                                    Service</a>
                                 </label>
                             </div>
                         </div>
