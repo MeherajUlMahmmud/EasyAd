@@ -40,6 +40,11 @@
                         </div>
 
                         <div class="card-header">
+                            {% if ad_item.is_active %}
+                            <i class="fas fa-check fa-fw " style="color: #30b535"></i> Vendors can see this ad
+                            {% else %}
+                            <i class="fas fa-times-circle fa-fw" style="color: #f20707"></i>  Vendors cannot see this ad
+                            {% endif %}
                             <h5 class="card-title fs-6 mt-1"><strong>Location: </strong>{{ ad_item.location }}</h5>
                         </div>
                         <div class="card-body">
@@ -101,7 +106,6 @@
             </div>
         </div>
 
-        <hr class="mt-3"/>
     </div>
 </div>
 {% endblock %}
