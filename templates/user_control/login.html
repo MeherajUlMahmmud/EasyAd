@@ -11,27 +11,36 @@
                                 box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
                                 padding: 30px;">
         {% csrf_token %}
-        <h2 class="text-center mb-2">Log in</h2>
-        <div class="form-group mb-3">
+        <h2 class="text-center mb-5">Log In</h2>
+        <div class="form-group mb-4">
             {{ form.email|add_class:"form-control"|attr:"autofocus" }}
             {{ form.email.errors }}
         </div>
-        <div class="form-group mb-3">
+        <div class="form-group mb-2">
             {{ form.password|add_class:"form-control" }}
             {{ form.password.errors }}
         </div>
+
+        {% if form.non_field_errors %}
+        <ul class='form-errors list-group mb-4'>
+            {% for error in form.non_field_errors %}
+            <li class="small list-group-item list-group-item-danger">{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </div>
     </form>
 </div>
-<hr/>
 
 <script>
     var form_fields = document.getElementsByTagName("input");
 
     form_fields[1].placeholder = 'Email Address';
     form_fields[2].placeholder = 'Password';
+
 
 
 
