@@ -57,10 +57,10 @@ def ad_detail_view(request, pk):
         ad_item.save()
         return redirect('ad-detail', ad_item.id)
 
-    if request.GET.get('orderNow'):
-        ad_item.is_active = True
-        ad_item.save()
-        return redirect('ad-detail', ad_item.id)
+    # if request.GET.get('orderNow'):
+    #     ad_item.is_active = True
+    #     ad_item.save()
+    #     return redirect('ad-detail', ad_item.id)
 
     context = {
         'ad_item': ad_item,
@@ -72,16 +72,40 @@ def ad_detail_view(request, pk):
 
 def confirm_order_view(request, pk):
     ad_item = AdvertiseModel.objects.get(id=pk)
+    customer = CustomerModel.objects.get(user=request.user)
+
     form = ConfirmOrderForm()
     if request.method == 'POST':
-        form = ConfirmOrderForm(request.POST)
+        form = ConfirmOrderForm(request.POST, request.FILES)
+        # print("Inside post")
         if form.is_valid():
+            # print("inside valid")
             new_order = form.save(commit=False)
-            new_order.customer = request.user
+            new_order.customer = customer
             new_order.advertise = ad_item
+
+            duration = int(form.cleaned_data['duration'])
+            # print(duration)
+            # print(type(duration))
+            price_rate = form.cleaned_data['price_rate']
+            # print(price_rate)
+
+            new_order.duration = duration
+            new_order.price_rate = price_rate
+
+            total = 1
+            if price_rate == "Day":
+                total = duration * ad_item.price
+            elif price_rate == "Month":
+                total = duration * 30 * ad_item.price
+
+            new_order.total_cost = total
+
             form.save()
+            # print("Order saved")
             return redirect('home')
         else:
+            print("Inside invalid")
             context = {
                 'ad_item': ad_item,
                 'form': form
