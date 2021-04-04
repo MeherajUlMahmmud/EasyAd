@@ -13,7 +13,7 @@ SECRET_KEY = 'p)oj)w+&exkc-f=a)c$@-%-n4smz6g#tzvf23h5r3gils)7hz)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://easy-ad-123.herokuapp.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['https://easy-ad-123.herokuapp.com/', 'easy-ad-123.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
