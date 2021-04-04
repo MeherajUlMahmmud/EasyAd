@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
             email = self.cleaned_data.get('email')
             password = self.cleaned_data.get('password')
             if not authenticate(email=email, password=password):
-                raise forms.ValidationError("invalid log in credentials")
+                raise forms.ValidationError("Invalid Username or Password")
 
 
 class AdvertiserRegistrationForm(UserCreationForm):
