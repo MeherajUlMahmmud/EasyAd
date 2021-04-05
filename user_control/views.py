@@ -1,6 +1,7 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.utils.text import slugify
@@ -211,5 +212,37 @@ def contact_view(request):
     return render(request, 'contact.html')
 
 
+@login_required
 def account_settings(request):
-    return render(request, 'settings.html')
+    user = request.user
+
+    information_form = AccountInformationForm(instance=user)
+    password_form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        information_form = AccountInformationForm(request.POST, instance=user)
+        password_form = PasswordChangeForm(request.user, request.POST)
+
+        if information_form.is_valid():
+            information_form.save()
+            slug_str = "%s %s" % (user.name, user.id)
+            user.slug = slugify(slug_str)
+            user.save()
+            return redirect('profile', request.user.slug)
+
+        elif password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('profile', request.user.slug)
+        else:
+            context = {
+                'information_form': information_form,
+                'password_form': password_form,
+            }
+            return render(request, 'settings.html', context)
+
+    context = {
+        'information_form': information_form,
+        'password_form': password_form,
+    }
+    return render(request, 'settings.html', context)
