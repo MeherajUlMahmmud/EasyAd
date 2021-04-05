@@ -25,9 +25,12 @@
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light primary-color">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}">EasyAd</a>
+        <a class="navbar-brand" href="{% url 'home' %}">
+<!--            <img src="{% static 'assets/images/easyad-logo.png' %}"/>-->
+            EasyAd
+        </a>
 
         <button
                 class="navbar-toggler"
@@ -40,17 +43,61 @@
             <i class="fas fa-bars"></i>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">About</a>
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                 </li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+                       data-mdb-toggle="dropdown"
+                       href="#" id="navbarDropdownMenuLink1" role="button">
+                        Orders
+                    </a>
+                    {% if request.user.is_advertiser %}
+                    <div aria-labelledby="navbarDropdownMenuLink1" class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'advertiser-unchecked-orders' %}">Unchecked Orders
+                            <span class="badge bg-primary ms-2">8</span></a>
+
+                        <a class="dropdown-item" href="{% url 'advertiser-unpaid-orders' %}">Unpaid Orders
+                            <span class="badge bg-primary ms-2">8</span></a>
+
+                        <a class="dropdown-item" href="{% url 'advertiser-ads-to-run' %}">Ads to Run
+                            <span class="badge bg-primary ms-2">8</span></a>
+
+                        <a class="dropdown-item" href="{% url 'advertiser-running-ads' %}">Running Ads
+                            <span class="badge bg-primary ms-2">8</span></a>
+
+                        <a class="dropdown-item" href="{% url 'advertiser-finished-ads' %}">Finished Ads
+                            <span class="badge bg-primary ms-2">8</span></a>
+                    </div>
+                    {% elif request.user.is_customer %}
+                    <div aria-labelledby="navbarDropdownMenuLink1" class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'customer-pending-orders' %}">Pending Orders
+                            <span class="badge bg-primary ms-2">{{ pending_orders|length }}</span></a>
+
+                        <a class="dropdown-item" href="{% url 'customer-unpaid-orders' %}">Unpaid Orders
+                            <span class="badge bg-primary ms-2">{{ unpaid_orders|length }}</span></a>
+
+                        <a class="dropdown-item" href="{% url 'customer-ads-to-run' %}">Ads to Run
+                            <span class="badge bg-primary ms-2">{{ ads_to_run|length }}</span></a>
+
+                        <a class="dropdown-item" href="{% url 'customer-running-ads' %}">Running Ads
+                            <span class="badge bg-primary ms-2">{{ running_ads|length }}</span></a>
+
+                        <a class="dropdown-item" href="{% url 'customer-finished-ads' %}">Finished Ads
+                            <span class="badge bg-primary ms-2">{{ finished_ads|length }}</span></a>
+                    </div>
+                    {% endif %}
+                </li>
+                {% endif %}
             </ul>
 
             {% if request.user.is_authenticated %}
@@ -81,7 +128,7 @@
                         {{request.user.name}}
                     </a>
                     <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{% url 'profile' request.user.slug %}">
                             <i class="far fa-user me-2"></i>Profile
                         </a>
                         <a class="dropdown-item" href="{% url 'settings' %}">
@@ -124,7 +171,7 @@
     </div>
 </nav>
 
-<div class="">
+<div class="" style="min-height: 75vh;">
 
     {% block content %}
 
