@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for order_item in pending_orders %}
+        <div class="col mt-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <h5 class="card-title fs-6 mt-2"><strong>Order ID: </strong>{{ order_item.id }}</h5>
+                </div>
+
+                <div class="card-body">
+                    <p class="card-text fs-6">
+                        <strong>Advertiser: </strong><a href="#">{{ order_item.advertise.user.name }}</a><br/>
+                        <strong>Ad Duration: </strong>{{ order_item.duration }} {{ order_item.price_rate }}<br/>
+                        <strong>Total Due Amount: </strong>{{ order_item.total_cost }} BDT<br/>
+
+
+                        <!-- Modal -->
+                    <div
+                            class="modal fade"
+                            id="exampleModal"
+                            tabindex="-1"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Order Cancellation</h5>
+                                    <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-mdb-dismiss="modal"
+                                            aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3>Cancel this order? </h3>
+                                    <div class="card-body">
+                                        <form method="GET" action="">
+                                            <input name="orderID" type="text" value="{{ order_item.id }}" hidden/>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <input type="submit" name="cancelOrder"
+                                                           class="btn btn-danger btn-block"
+                                                           value="Confirm Cancellation"/>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <button type="button" class="btn btn-outline-danger btn-block"
+                                                            data-mdb-dismiss="modal">
+                                                        Do not Cancel Order
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button
+                                    type="button"
+                                    class="btn btn-danger mb-3"
+                                    data-mdb-ripple-color="#000000"
+                                    data-mdb-toggle="modal"
+                                    data-mdb-target="#exampleModal">Cancel Order
+                            </button>
+
+                        </div>
+                        <div class="col-md-6">
+                            <button
+                                    type="button"
+                                    class="btn btn-outline-primary mb-3"
+                                    data-mdb-ripple-color="#">Order Details
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <p class="fs-6">Ordered: {{ order_item.date_created|timesince }} ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for order_item in ads_to_run %}
+        <div class="col mt-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <h5 class="card-title fs-6 mt-2"><strong>Order ID: </strong>{{ order_item.id }}</h5>
+                </div>
+
+                <div class="card-body">
+                    <p class="card-text fs-6">
+                        <strong>Advertiser: </strong><a href="#">{{ order_item.advertise.user.name }}</a><br/>
+                        <strong>Ad Duration: </strong>{{ order_item.duration }} {{ order_item.price_rate }}<br/>
+                        <strong>Total Due Amount: </strong>{{ order_item.total_cost }} BDT<br/>
+                    </p>
+
+                    <div class="card-footer">
+                        <p class="fs-6">Ordered: {{ order_item.date_created|timesince }} ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+
+{% endblock %}

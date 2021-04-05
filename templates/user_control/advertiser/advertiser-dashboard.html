@@ -43,7 +43,7 @@
                             {% if ad_item.is_active %}
                             <i class="fas fa-check fa-fw " style="color: #30b535"></i> Vendors can see this ad
                             {% else %}
-                            <i class="fas fa-times-circle fa-fw" style="color: #f20707"></i>  Vendors cannot see this ad
+                            <i class="fas fa-times-circle fa-fw" style="color: #f20707"></i> Vendors cannot see this ad
                             {% endif %}
                             <h5 class="card-title fs-6 mt-1"><strong>Location: </strong>{{ ad_item.location }}</h5>
                         </div>
@@ -80,30 +80,43 @@
             <a class="btn btn-success btn-block rounded" href="{% url 'post-ad' %}">
                 <i class="fas fa-plus me-2"></i>Post New Ad</a>
 
-            <div class="card my-4">
-                <h5 class="card-header text-center">Orders</h5>
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Heading</th>
-                            <th>Heading</th>
-                        </tr>
-                        </thead>
+            {% if unchecked_orders %}
+            <div class="col mt-3">
+                <div class="card border border-primary shadow-0 ">
+                    <div class="card-header h4">Orders to be checked</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <span class="fs-1 h2">{{ unchecked_orders|length }}</span><span
+                                class="fs-5"> Unchecked Orders</span>
+                        </p>
 
-                        {% for profile in profiles %}
-                        <tr>
-                            <td><a href="#" class="card-link">{{ profile.user.name
-                                }}</a></td>
-                            <td>{{ profile.blood_group }}</td>
-                        </tr>
-                        {% endfor %}
-
-                    </table>
-                    <a class="btn btn-primary btn-block" href="#">View More<i
-                            class="fas fa-arrow-right ms-2"></i></a>
+                        <a href="{% url 'advertiser-unchecked-orders' %}" type="button" class="btn btn-primary">View
+                            All<i
+                                class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
+            {% endif %}
+
+            {% if unpaid_orders %}
+            <div class="col mt-3">
+                <div class="card border border-primary shadow-0 ">
+                    <div class="card-header h4">Unpaid Orders</div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <span class="fs-1 h2">{{ unpaid_orders|length }}</span><span
+                                class="fs-5"> Unpaid Orders</span>
+                        </p>
+
+                        <a href="{% url 'unchecked-orders' %}" type="button" class="btn btn-primary">View All<i
+                                class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
 
     </div>

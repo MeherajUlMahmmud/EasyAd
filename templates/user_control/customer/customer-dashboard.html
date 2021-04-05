@@ -24,23 +24,6 @@
         </div>
         {% endif %}
 
-        {% if paid_orders %}
-        <div class="col">
-            <div class="card border border-primary shadow-0">
-                <div class="card-header h4">Paid Orders</div>
-                <div class="card-body">
-                    <p class="card-text">
-                        <span class="fs-1 h2">{{ paid_orders|length }}</span><span
-                            class="fs-5"> Paid Orders</span>
-                    </p>
-
-                    <button type="button" class="btn btn-primary">View All<i class="fas fa-arrow-right ms-2"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
         {% if unpaid_orders %}
         <div class="col">
             <div class="card border border-primary shadow-0">
@@ -51,8 +34,9 @@
                             class="fs-5"> Unpaid Orders</span>
                     </p>
 
-                    <button type="button" class="btn btn-primary">View All<i class="fas fa-arrow-right ms-2"></i>
-                    </button>
+                    <a href="{% url 'customer-unpaid-orders' %}" type="button" class="btn btn-primary">View All<i
+                            class="fas fa-arrow-right ms-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -213,4 +197,5 @@
     </div>
 
 </div>
+
 {% endblock %}

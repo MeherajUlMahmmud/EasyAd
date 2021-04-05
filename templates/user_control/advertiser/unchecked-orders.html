@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for order_item in unchecked_orders %}
+        <div class="col mt-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <h5 class="card-title fs-6 mt-2"><strong>Order ID: </strong>{{ order_item.id }}</h5>
+                </div>
+
+                <div class="card-body">
+                    <p class="card-text fs-6">
+                        <strong>Ordered by: </strong>{{ order_item.customer.user.name }}<br/>
+                        <strong>Ad Duration: </strong>{{ order_item.duration }} {{ order_item.price_rate }}<br/>
+                        <strong>Total Amount: </strong>{{ order_item.total_cost }} BDT<br/>
+
+                        {% if order_item.additional_note %}
+                        <strong>{{ order_item.customer.user.name }} said: </strong>
+                        {{ order_item.additional_note|truncatechars:75 }}
+
+                        {% ifnotequal order_item.additional_note|truncatewords_html:20|length order_item.additional_note|truncatewords_html:21|length %}
+                        <button
+                                type="button"
+                                class="btn btn-outline-success btn-rounded  btn-sm"
+                                data-mdb-ripple-color="#000000"
+                                data-mdb-toggle="modal"
+                                data-mdb-target="#exampleModal"
+                        > ....
+                        </button>
+                        {% endifnotequal %}
+                        {% endif %}
+
+
+                        <!-- Modal -->
+                    <div
+                            class="modal fade"
+                            id="exampleModal"
+                            tabindex="-1"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Alice said</h5>
+                                    <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-mdb-dismiss="modal"
+                                            aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ order_item.additional_note }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </p>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <form method="get">
+                            <input name="orderID" type="text" value="{{ order_item.id }}" hidden/>
+                                <input
+                                        type="submit"
+                                        name="acceptOrder"
+                                        class="btn btn-success mb-2"
+                                        value="Accept"/>
+                            </form>
+                        </div>
+                        <div class="col-6">
+                            <form method="get">
+                                <input
+                                        type="submit"
+                                        name="rejectOrder"
+                                        class="btn btn-danger mb-2"
+                                        value="Reject"/>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <p class="fs-6">Ordered: {{ order_item.date_created|timesince }} ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+
+{% endblock %}
