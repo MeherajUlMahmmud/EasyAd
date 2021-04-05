@@ -40,6 +40,7 @@ class MyUserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
+    slug = models.CharField(max_length=255, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_advertiser = models.BooleanField(default=False)
     is_customer = models.BooleanField(default=False)
