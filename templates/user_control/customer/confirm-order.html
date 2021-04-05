@@ -51,13 +51,16 @@
                                 </div>
                             </div>
 
+                            <div class="row form-group">
+                                <div class="col-md-12 mb-3">
+                                    <label class="small">Additional Note</label>
+                                    {{ form.additional_note|add_class:"form-control" }}
+                                </div>
+                            </div>
+
                             <button type="submit" class="btn btn-success btn-lg btn-block">
                                 Save Order
                             </button>
-
-                            <!--                            <a class="btn btn-success btn-lg btn-block" href="{% url 'checkout'  %}">-->
-                            <!--                                Save Order-->
-                            <!--                            </a>-->
                         </form>
                     </div>
                 </div>
