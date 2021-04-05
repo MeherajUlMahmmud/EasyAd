@@ -1,7 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.utils.text import slugify
 
 from user_control.decorators import *
 from user_control.forms import *
@@ -62,6 +64,9 @@ def advertiser_signup_view(request):
             email = request.POST['email']
             password = request.POST['password1']
             user = authenticate(request, email=email, password=password)
+            slug_str = "%s %s" % (user.name, user.id)
+            user.slug = slugify(slug_str)
+            user.save()
             AdvertiserModel.objects.create(user=user)
             login(request, user)
             return redirect('advertiser-dashboard')
@@ -88,6 +93,9 @@ def customer_signup_view(request):
             email = request.POST['email']
             password = request.POST['password1']
             user = authenticate(request, email=email, password=password)
+            slug_str = "%s %s" % (user.name, user.id)
+            user.slug = slugify(slug_str)
+            user.save()
             CustomerModel.objects.create(user=user)
             login(request, user)
             return redirect('customer-dashboard')
@@ -105,20 +113,30 @@ def customer_signup_view(request):
     return render(request, 'user_control/customer/customer-signup.html', context)
 
 
+@login_required
 @show_to_advertiser(allowed_roles=['admin', 'is_advertiser'])
 def advertiser_dashboard(request):
     ad_queryset = AdvertiseModel.objects.all()
     ad_list = list(ad_queryset)
-
-    # for item in ad_list:
-    #     print(item.image)
-
+    order_queryset = OrderModel.objects.all()
+    order_list = list(order_queryset)
+    unchecked_orders = [item for item in order_list
+                        if item.advertise.user == request.user
+                        and not item.is_approved
+                        and not item.is_canceled]
+    unpaid_orders = [item for item in order_list
+                     if item.advertise.user == request.user
+                     and item.is_approved
+                     and not item.is_paid]
     context = {
         'ad_list': ad_list,
+        'unchecked_orders': unchecked_orders,
+        'unpaid_orders': unpaid_orders,
     }
     return render(request, 'user_control/advertiser/advertiser-dashboard.html', context)
 
 
+@login_required
 @show_to_customer(allowed_roles=['admin', 'is_customer'])
 def customer_dashboard(request):
     ad_queryset = AdvertiseModel.objects.filter(is_active=True)
@@ -127,17 +145,49 @@ def customer_dashboard(request):
     customer = CustomerModel.objects.get(user=request.user)
     order_queryset = OrderModel.objects.filter(customer=customer)
     order_list = list(order_queryset)
-    pending_orders = [item for item in order_list if not item.is_approved]
+    pending_orders = [item for item in order_list
+                      if item.customer.user == request.user
+                      and not item.is_approved]
+    unpaid_orders = [item for item in order_list
+                     if item.customer.user == request.user
+                     and item.is_approved
+                     and not item.customer_paid_approval]
+    ads_to_run = [item for item in order_list
+                  if item.customer.user == request.user
+                  and item.is_approved
+                  and item.customer_paid_approval
+                  and not item.is_running]
+    running_ads = [item for item in order_list
+                   if item.customer.user == request.user
+                   and item.is_approved
+                   and item.customer_paid_approval
+                   and item.is_running
+                   and not item.is_complete]
+    finished_ads = [item for item in order_list
+                    if item.customer.user == request.user
+                    and item.is_approved
+                    and item.customer_paid_approval
+                    and not item.is_running
+                    and item.is_complete]
     context = {
         'order_list': order_list,
         'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
         'recent_ads': ad_list[:3],
     }
     return render(request, 'user_control/customer/customer-dashboard.html', context)
 
 
+@login_required
+def profile_view(request, slug):
+    return render(request, "user_control/profile.html")
+
+
 def about_view(request):
-    pass
+    return render(request, "about.html")
 
 
 def contact_view(request):
@@ -162,4 +212,4 @@ def contact_view(request):
 
 
 def account_settings(request):
-    pass
+    return render(request, 'settings.html')
