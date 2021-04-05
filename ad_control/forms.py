@@ -28,4 +28,5 @@ class ConfirmOrderForm(ModelForm):
     class Meta:
         model = OrderModel
         fields = '__all__'
-        exclude = ['customer', 'advertise', 'total_cost', 'is_approved', 'is_paid', 'is_running', 'is_complete']
+        exclude = ['customer', 'advertise', 'total_cost', 'is_approved', 'is_canceled', 'is_paid', 'is_running',
+                   'is_complete']
