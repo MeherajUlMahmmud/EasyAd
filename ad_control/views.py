@@ -119,10 +119,12 @@ def confirm_order_view(request, pk):
 
 @login_required
 def order_details_view(request, pk):
-    ad_item = AdvertiseModel.objects.get(id=pk)
+    order_item = OrderModel.objects.get(id=pk)
+    ad_item = order_item.advertise
     customer = CustomerModel.objects.get(user=request.user)
 
     context = {
+        'order_item': order_item,
         'ad_item': ad_item,
         'customer': customer
     }
