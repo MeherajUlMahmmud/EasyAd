@@ -16,7 +16,8 @@ urlpatterns = [
     path('customer/customer-dashboard', customer_dashboard, name='customer-dashboard'),
 
     # advertiser profile and customer profile
-    path('accounts/profile/<str:slug>/', profile_view, name='profile'),
+    path('accounts/advertiser-profile/<str:slug>/', advertiser_profile_view, name='advertiser-profile'),
+    path('accounts/customer-profile/<str:slug>/', customer_profile_view, name='customer-profile'),
 
     # advertiser and company profile edit url
     # path('advertiser/advertiser-edit-profile', advertiser_edit_profile, name='advertiser-edit-profile'),
