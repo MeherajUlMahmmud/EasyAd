@@ -9,6 +9,7 @@ from django.utils.text import slugify
 from user_control.decorators import *
 from user_control.forms import *
 from ad_control.models import *
+from user_control.utils import *
 
 
 @unauthenticated_user
@@ -143,55 +144,81 @@ def customer_dashboard(request):
     ad_queryset = AdvertiseModel.objects.filter(is_active=True)
     ad_list = list(ad_queryset)
 
-    customer = CustomerModel.objects.get(user=request.user)
-    order_queryset = OrderModel.objects.filter(customer=customer)
-    order_list = list(order_queryset)
-    pending_orders = [item for item in order_list
-                      if item.customer.user == request.user
-                      and not item.is_approved]
-    unpaid_orders = [item for item in order_list
-                     if item.customer.user == request.user
-                     and item.is_approved
-                     and not item.customer_paid_approval]
-    ads_to_run = [item for item in order_list
-                  if item.customer.user == request.user
-                  and item.is_approved
-                  and item.customer_paid_approval
-                  and not item.is_running]
-    running_ads = [item for item in order_list
-                   if item.customer.user == request.user
-                   and item.is_approved
-                   and item.customer_paid_approval
-                   and item.is_running
-                   and not item.is_complete]
-    finished_ads = [item for item in order_list
-                    if item.customer.user == request.user
-                    and item.is_approved
-                    and item.customer_paid_approval
-                    and not item.is_running
-                    and item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
     context = {
-        'order_list': order_list,
+        'recent_ads': ad_list[:3],
+
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
         'ads_to_run': ads_to_run,
         'running_ads': running_ads,
         'finished_ads': finished_ads,
-        'recent_ads': ad_list[:3],
     }
     return render(request, 'user_control/customer/customer-dashboard.html', context)
 
 
 @login_required
-def profile_view(request, slug):
-    return render(request, "user_control/profile.html")
+def customer_profile_view(request, slug):
+    user = User.objects.get(slug=slug)
+    customer = CustomerModel.objects.get(user=user)
+
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+    context = {
+        'user': user,
+        'customer': customer,
+
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
+    }
+    return render(request, "user_control/customer/customer-profile.html", context)
+
+
+@login_required
+def advertiser_profile_view(request, slug):
+    pass
 
 
 def about_view(request):
-    return render(request, "about.html")
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+    context = {
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
+    }
+    return render(request, "about.html", context)
 
 
 def contact_view(request):
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+    context = {
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
+    }
+
     if request.method == 'POST':
         name = request.POST['name']
         email_add = request.POST['email']
@@ -207,13 +234,19 @@ def contact_view(request):
         )
         messages.success(request, "Feedback sent successfully.")
 
-        return render(request, 'contact.html')
+        return render(request, 'contact.html', context)
 
-    return render(request, 'contact.html')
+    return render(request, 'contact.html', context)
 
 
 @login_required
 def account_settings(request):
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+
     user = request.user
 
     information_form = AccountInformationForm(instance=user)
@@ -227,21 +260,32 @@ def account_settings(request):
             slug_str = "%s %s" % (user.name, user.id)
             user.slug = slugify(slug_str)
             user.save()
-            return redirect('profile', request.user.slug)
+            return redirect('settings')
 
         elif password_form.is_valid():
             user = password_form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Your password was successfully updated!')
-            return redirect('profile', request.user.slug)
+            return redirect('settings')
         else:
             context = {
+                'pending_orders': pending_orders,
+                'unpaid_orders': unpaid_orders,
+                'ads_to_run': ads_to_run,
+                'running_ads': running_ads,
+                'finished_ads': finished_ads,
+
                 'information_form': information_form,
                 'password_form': password_form,
             }
             return render(request, 'settings.html', context)
-
     context = {
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
+
         'information_form': information_form,
         'password_form': password_form,
     }
