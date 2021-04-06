@@ -7,15 +7,32 @@
     <meta charset="UTF-8">
     <title>EasyAd</title>
 
-    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet'
-          type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!--    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet'-->
+    <!--          type='text/css'>-->
+    <!--    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>-->
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"/>
+    <!--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"/>-->
 
     <!-- Global CSS -->
-    <link href="{% static 'assets/css/mdb.min.css' %}" rel="stylesheet">
+    <!--    <link href="{% static 'assets/css/mdb.min.css' %}" rel="stylesheet">-->
+
+    <!-- Font Awesome -->
+
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.css"
+            rel="stylesheet"
+    />
 
 
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/favicon.jpg' %}"/>
@@ -28,7 +45,7 @@
 <nav class="navbar navbar-expand-lg navbar-light primary-color">
     <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">
-<!--            <img src="{% static 'assets/images/easyad-logo.png' %}"/>-->
+            <!--            <img src="{% static 'assets/images/easyad-logo.png' %}"/>-->
             EasyAd
         </a>
 
@@ -128,9 +145,15 @@
                         {{request.user.name}}
                     </a>
                     <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'profile' request.user.slug %}">
+                        {% if request.user.is_advertiser %}
+                        <a class="dropdown-item" href="{% url 'advertiser-profile' request.user.slug %}">
                             <i class="far fa-user me-2"></i>Profile
                         </a>
+                        {% else %}
+                        <a class="dropdown-item" href="{% url 'customer-profile' request.user.slug %}">
+                            <i class="far fa-user me-2"></i>Profile
+                        </a>
+                        {% endif %}
                         <a class="dropdown-item" href="{% url 'settings' %}">
                             <i class="fas fa-cog me-2"></i>Settings
                         </a>
@@ -182,7 +205,11 @@
 {% include "./footer.html" %}
 
 <!-- MDB -->
-<script type="text/javascript" src="{% static 'assets/js/mdb.min.js' %}"></script>
-
+<!--<script type="text/javascript" src="{% static 'assets/js/mdb.min.js' %}"></script>-->
+<!-- MDB -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.js"
+></script>
 </body>
 </html>
