@@ -3,12 +3,19 @@ from django.shortcuts import render, redirect
 
 from ad_control.forms import *
 from ad_control.models import *
-from user_control.decorators import unauthenticated_user
+from user_control.utils import *
 
 
 @login_required
 def post_ad_view(request):
     task = "Post New"
+
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+
     form = PostAdForm()
     if request.method == 'POST':
         form = PostAdForm(request.POST, request.FILES)
@@ -20,13 +27,68 @@ def post_ad_view(request):
         else:
             context = {
                 'task': task,
-                'form': form
+                'form': form,
+
+                'pending_orders': pending_orders,
+                'unpaid_orders': unpaid_orders,
+                'ads_to_run': ads_to_run,
+                'running_ads': running_ads,
+                'finished_ads': finished_ads,
             }
             return render(request, 'ad_control/post-update-ad.html', context)
 
     context = {
         'task': task,
-        'form': form
+        'form': form,
+
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
+    }
+    return render(request, 'ad_control/post-update-ad.html', context)
+
+
+@login_required
+def update_ad_view(request, pk):
+    task = "Update"
+    ad_item = AdvertiseModel.objects.get(id=pk)
+
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+
+    form = PostAdForm(instance=ad_item)
+    if request.method == 'POST':
+        form = PostAdForm(request.POST, request.FILES, instance=ad_item)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            context = {
+                'task': task,
+                'form': form,
+
+                'pending_orders': pending_orders,
+                'unpaid_orders': unpaid_orders,
+                'ads_to_run': ads_to_run,
+                'running_ads': running_ads,
+                'finished_ads': finished_ads,
+            }
+            return render(request, 'ad_control/post-update-ad.html', context)
+
+    context = {
+        'task': task,
+        'form': form,
+
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'ad_control/post-update-ad.html', context)
 
@@ -34,6 +96,12 @@ def post_ad_view(request):
 @login_required
 def ad_detail_view(request, pk):
     ad_item = AdvertiseModel.objects.get(id=pk)
+
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     try:
         customer_ordered = OrderModel.objects.get(customer=request.user, advertise=ad_item)
@@ -61,15 +129,16 @@ def ad_detail_view(request, pk):
         ad_item.save()
         return redirect('ad-detail', ad_item.id)
 
-    # if request.GET.get('orderNow'):
-    #     ad_item.is_active = True
-    #     ad_item.save()
-    #     return redirect('ad-detail', ad_item.id)
-
     context = {
         'ad_item': ad_item,
         'location_link': location_link,
         'customer_ordered': customer_ordered,
+
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'ad_control/ad-detail.html', context)
 
@@ -78,6 +147,12 @@ def ad_detail_view(request, pk):
 def confirm_order_view(request, pk):
     ad_item = AdvertiseModel.objects.get(id=pk)
     customer = CustomerModel.objects.get(user=request.user)
+
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     form = ConfirmOrderForm()
     if request.method == 'POST':
@@ -106,13 +181,25 @@ def confirm_order_view(request, pk):
         else:
             context = {
                 'ad_item': ad_item,
-                'form': form
+                'form': form,
+
+                'pending_orders': pending_orders,
+                'unpaid_orders': unpaid_orders,
+                'ads_to_run': ads_to_run,
+                'running_ads': running_ads,
+                'finished_ads': finished_ads,
             }
             return render(request, 'user_control/customer/confirm-order.html', context)
 
     context = {
         'ad_item': ad_item,
         'form': form,
+
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/customer/confirm-order.html', context)
 
@@ -123,26 +210,33 @@ def order_details_view(request, pk):
     ad_item = order_item.advertise
     customer = CustomerModel.objects.get(user=request.user)
 
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+
     context = {
         'order_item': order_item,
         'ad_item': ad_item,
-        'customer': customer
+        'customer': customer,
+
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/order-details.html', context)
 
 
 @login_required
 def advertiser_unchecked_order_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-    unchecked_orders = [item for item in order_list
-                        if item.advertise.user == request.user
-                        and not item.is_approved
-                        and not item.is_canceled
-                        and not item.advertiser_paid_approval
-                        and not item.customer_paid_approval
-                        and not item.is_running
-                        and not item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     if request.GET.get('acceptOrder'):
         item_id = int(request.GET.get('orderID'))
@@ -159,23 +253,23 @@ def advertiser_unchecked_order_view(request):
         return redirect('unchecked-orders')
 
     context = {
-        'unchecked_orders': unchecked_orders,
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/advertiser/unchecked-orders.html', context)
 
 
+# TODO
 @login_required
 def advertiser_unpaid_order_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-    unpaid_orders = [item for item in order_list
-                     if item.advertise.user == request.user
-                     and item.is_approved
-                     and not item.is_canceled
-                     and not item.advertiser_paid_approval
-                     and not item.customer_paid_approval
-                     and not item.is_running
-                     and not item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     if request.GET.get('acceptOrder'):
         item_id = int(request.GET.get('orderID'))
@@ -192,49 +286,48 @@ def advertiser_unpaid_order_view(request):
         return redirect('unchecked-orders')
 
     context = {
+        'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/advertiser/unpaid-orders.html', context)
 
 
 @login_required
 def advertiser_ads_to_run_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-    ads_to_run = [item for item in order_list
-                  if item.advertise.user == request.user
-                  and item.is_approved
-                  and not item.is_canceled
-                  and not item.advertiser_paid_approval
-                  and item.customer_paid_approval
-                  and not item.is_running
-                  and not item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     if request.GET.get('runAd'):
         item_id = int(request.GET.get('orderID'))
         order_item = OrderModel.objects.get(id=item_id)
+        order_item.advertiser_paid_approval = True
         order_item.is_running = True
         order_item.save()
         return redirect('advertiser-ads-to-run-orders')
 
     context = {
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
         'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/advertiser/ads-to-run.html', context)
 
 
 @login_required
 def advertiser_running_ads_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-    running_ads = [item for item in order_list
-                   if item.advertise.user == request.user
-                   and item.is_approved
-                   and not item.is_canceled
-                   and item.advertiser_paid_approval
-                   and item.customer_paid_approval
-                   and item.is_running
-                   and not item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     if request.GET.get('adFinished'):
         item_id = int(request.GET.get('orderID'))
@@ -242,28 +335,31 @@ def advertiser_running_ads_view(request):
         order_item.is_running = False
         order_item.is_complete = True
         order_item.save()
-        return redirect('advertiser-running-ads-orders')
+        return redirect('advertiser-running-ads')
 
     context = {
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
         'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/advertiser/running-ads.html', context)
 
 
 @login_required
 def advertiser_finished_ads_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-    finished_ads = [item for item in order_list
-                    if item.advertise.user == request.user
-                    and item.is_approved
-                    and not item.is_canceled
-                    and item.advertiser_paid_approval
-                    and item.customer_paid_approval
-                    and not item.is_running
-                    and item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     context = {
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
         'finished_ads': finished_ads,
     }
     return render(request, 'user_control/advertiser/finished-ads.html', context)
@@ -271,17 +367,11 @@ def advertiser_finished_ads_view(request):
 
 @login_required
 def customer_pending_order_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-
-    pending_orders = [item for item in order_list
-                      if item.customer.user == request.user
-                      and not item.is_approved
-                      and not item.is_canceled
-                      and not item.advertiser_paid_approval
-                      and not item.customer_paid_approval
-                      and not item.is_running
-                      and not item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     if request.GET.get('cancelOrder'):
         item_id = int(request.GET.get('orderID'))
@@ -292,20 +382,21 @@ def customer_pending_order_view(request):
 
     context = {
         'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/customer/pending-orders.html', context)
 
 
 @login_required
 def customer_unpaid_order_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-
-    unpaid_orders = [item for item in order_list
-                     if item.customer.user == request.user
-                     and item.is_approved
-                     and not item.is_canceled
-                     and not item.customer_paid_approval]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     if request.GET.get('submitPayment'):
         item_id = int(request.GET.get('orderID'))
@@ -320,66 +411,64 @@ def customer_unpaid_order_view(request):
         return redirect('customer-unpaid-orders')
 
     context = {
+        'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/customer/unpaid-orders.html', context)
 
 
 @login_required
 def customer_ads_to_run_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-
-    ads_to_run = [item for item in order_list
-                  if item.customer.user == request.user
-                  and item.is_approved
-                  and not item.is_canceled
-                  and not item.advertiser_paid_approval
-                  and item.customer_paid_approval
-                  and not item.is_running
-                  and not item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     context = {
-        'ads_to_run': ads_to_run
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/customer/ads-to-run.html', context)
 
 
 @login_required
 def customer_running_ads_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-
-    running_ads = [item for item in order_list
-                   if item.customer.user == request.user
-                   and item.is_approved
-                   and not item.is_canceled
-                   and item.advertiser_paid_approval
-                   and item.customer_paid_approval
-                   and item.is_running
-                   and not item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     context = {
-        'running_ads': running_ads
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/customer/running-ads.html', context)
 
 
 @login_required
 def customer_finished_ads_view(request):
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-
-    finished_ads = [item for item in order_list
-                    if item.customer.user == request.user
-                    and item.is_approved
-                    and not item.is_canceled
-                    and item.advertiser_paid_approval
-                    and item.customer_paid_approval
-                    and not item.is_running
-                    and item.is_complete]
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
 
     context = {
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
         'finished_ads': finished_ads,
     }
     return render(request, 'user_control/customer/finished-ads.html', context)
