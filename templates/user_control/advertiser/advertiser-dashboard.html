@@ -80,13 +80,13 @@
             <a class="btn btn-success btn-block rounded" href="{% url 'post-ad' %}">
                 <i class="fas fa-plus me-2"></i>Post New Ad</a>
 
-            {% if unchecked_orders %}
+            {% if pending_orders %}
             <div class="col mt-3">
                 <div class="card border border-primary shadow-0 ">
                     <div class="card-header h4">Orders to be checked</div>
                     <div class="card-body">
                         <p class="card-text">
-                            <span class="fs-1 h2">{{ unchecked_orders|length }}</span><span
+                            <span class="fs-1 h2">{{ pending_orders|length }}</span><span
                                 class="fs-5"> Unchecked Orders</span>
                         </p>
 
