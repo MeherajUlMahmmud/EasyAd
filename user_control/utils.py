@@ -17,7 +17,13 @@ def get_pending_orders(request):
         order_queryset = OrderModel.objects.all()
         order_list = list(order_queryset)
         final_order_list = [item for item in order_list if item.advertise in advertise_list]
-        pending_orders = [item for item in final_order_list if not item.is_approved]
+        pending_orders = [item for item in final_order_list
+                          if not item.is_approved
+                          and not item.is_canceled
+                          and not item.advertiser_paid_approval
+                          and not item.customer_paid_approval
+                          and not item.is_running
+                          and not item.is_complete]
 
     return pending_orders
 
@@ -41,7 +47,11 @@ def get_unpaid_orders(request):
                             if item.advertise in advertise_list]
         unpaid_orders = [item for item in final_order_list
                          if item.is_approved
-                         and not item.customer_paid_approval]
+                         and not item.is_canceled
+                         and not item.advertiser_paid_approval
+                         and not item.customer_paid_approval
+                         and not item.is_running
+                         and not item.is_complete]
     return unpaid_orders
 
 
@@ -65,9 +75,11 @@ def get_ads_to_run(request):
                             if item.advertise in advertise_list]
         ads_to_run = [item for item in final_order_list
                       if item.is_approved
-                      and item.customer_paid_approval
+                      and not item.is_canceled
                       and not item.advertiser_paid_approval
-                      and not item.is_running]
+                      and item.customer_paid_approval
+                      and not item.is_running
+                      and not item.is_complete]
     return ads_to_run
 
 
@@ -92,6 +104,8 @@ def get_running_ads(request):
                             if item.advertise in advertise_list]
         running_ads = [item for item in final_order_list
                        if item.is_approved
+                       and not item.is_canceled
+                       and item.advertiser_paid_approval
                        and item.customer_paid_approval
                        and item.is_running
                        and not item.is_complete]
@@ -119,6 +133,8 @@ def get_finished_ads(request):
                             if item.advertise in advertise_list]
         finished_ads = [item for item in final_order_list
                         if item.is_approved
+                        and not item.is_canceled
+                        and item.advertiser_paid_approval
                         and item.customer_paid_approval
                         and not item.is_running
                         and item.is_complete]
