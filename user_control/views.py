@@ -120,20 +120,38 @@ def customer_signup_view(request):
 def advertiser_dashboard(request):
     ad_queryset = AdvertiseModel.objects.all()
     ad_list = list(ad_queryset)
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-    unchecked_orders = [item for item in order_list
-                        if item.advertise.user == request.user
-                        and not item.is_approved
-                        and not item.is_canceled]
-    unpaid_orders = [item for item in order_list
-                     if item.advertise.user == request.user
-                     and item.is_approved
-                     and not item.is_paid]
+
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+
+    search_keyword = request.GET.get('q')
+    if search_keyword is not None:
+        new_list = ad_list
+        ad_list = list(item for item in new_list if search_keyword in item.location.lower())
+
+        context = {
+            'ad_list': ad_list,
+            'search_keyword': search_keyword,
+
+            'pending_orders': pending_orders,
+            'unpaid_orders': unpaid_orders,
+            'ads_to_run': ads_to_run,
+            'running_ads': running_ads,
+            'finished_ads': finished_ads,
+        }
+        return render(request, 'user_control/advertiser/advertiser-dashboard.html', context)
+
     context = {
         'ad_list': ad_list,
-        'unchecked_orders': unchecked_orders,
+
+        'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
     }
     return render(request, 'user_control/advertiser/advertiser-dashboard.html', context)
 
@@ -149,8 +167,26 @@ def customer_dashboard(request):
     ads_to_run = get_ads_to_run(request)
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
+
+    search_keyword = request.GET.get('q')
+    if search_keyword is not None:
+        new_list = ad_list
+        ad_list = list(item for item in new_list if search_keyword in item.location.lower())
+
+        context = {
+            'ad_list': ad_list,
+            'search_keyword': search_keyword,
+
+            'pending_orders': pending_orders,
+            'unpaid_orders': unpaid_orders,
+            'ads_to_run': ads_to_run,
+            'running_ads': running_ads,
+            'finished_ads': finished_ads,
+        }
+        return render(request, 'user_control/customer/customer-dashboard.html', context)
+
     context = {
-        'recent_ads': ad_list[:3],
+        'ad_list': ad_list,
 
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
@@ -163,6 +199,9 @@ def customer_dashboard(request):
 
 @login_required
 def customer_profile_view(request, slug):
+    ad_queryset = AdvertiseModel.objects.filter(is_active=True)
+    ad_list = list(ad_queryset)
+
     user = User.objects.get(slug=slug)
     customer = CustomerModel.objects.get(user=user)
 
@@ -171,6 +210,24 @@ def customer_profile_view(request, slug):
     ads_to_run = get_ads_to_run(request)
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
+
+    search_keyword = request.GET.get('q')
+    if search_keyword is not None:
+        new_list = ad_list
+        ad_list = list(item for item in new_list if search_keyword in item.location.lower())
+
+        context = {
+            'ad_list': ad_list,
+            'search_keyword': search_keyword,
+
+            'pending_orders': pending_orders,
+            'unpaid_orders': unpaid_orders,
+            'ads_to_run': ads_to_run,
+            'running_ads': running_ads,
+            'finished_ads': finished_ads,
+        }
+        return render(request, 'user_control/customer/customer-dashboard.html', context)
+
     context = {
         'user': user,
         'customer': customer,
@@ -186,7 +243,25 @@ def customer_profile_view(request, slug):
 
 @login_required
 def advertiser_profile_view(request, slug):
-    pass
+    user = User.objects.get(slug=slug)
+    advertiser = AdvertiserModel.objects.get(user=user)
+
+    pending_orders = get_pending_orders(request)
+    unpaid_orders = get_unpaid_orders(request)
+    ads_to_run = get_ads_to_run(request)
+    running_ads = get_running_ads(request)
+    finished_ads = get_finished_ads(request)
+    context = {
+        'user': user,
+        'advertiser': advertiser,
+
+        'pending_orders': pending_orders,
+        'unpaid_orders': unpaid_orders,
+        'ads_to_run': ads_to_run,
+        'running_ads': running_ads,
+        'finished_ads': finished_ads,
+    }
+    return render(request, "user_control/advertiser/advertiser-profile.html", context)
 
 
 def about_view(request):
@@ -269,24 +344,24 @@ def account_settings(request):
             return redirect('settings')
         else:
             context = {
+                'information_form': information_form,
+                'password_form': password_form,
+
                 'pending_orders': pending_orders,
                 'unpaid_orders': unpaid_orders,
                 'ads_to_run': ads_to_run,
                 'running_ads': running_ads,
                 'finished_ads': finished_ads,
-
-                'information_form': information_form,
-                'password_form': password_form,
             }
             return render(request, 'settings.html', context)
     context = {
+        'information_form': information_form,
+        'password_form': password_form,
+
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
         'ads_to_run': ads_to_run,
         'running_ads': running_ads,
         'finished_ads': finished_ads,
-
-        'information_form': information_form,
-        'password_form': password_form,
     }
     return render(request, 'settings.html', context)
