@@ -81,19 +81,19 @@
                     {% if request.user.is_advertiser %}
                     <div aria-labelledby="navbarDropdownMenuLink1" class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'advertiser-unchecked-orders' %}">Unchecked Orders
-                            <span class="badge bg-primary ms-2">8</span></a>
+                            <span class="badge bg-primary ms-2">{{ pending_orders|length }}</span></a>
 
                         <a class="dropdown-item" href="{% url 'advertiser-unpaid-orders' %}">Unpaid Orders
-                            <span class="badge bg-primary ms-2">8</span></a>
+                            <span class="badge bg-primary ms-2">{{ unpaid_orders|length }}</span></a>
 
                         <a class="dropdown-item" href="{% url 'advertiser-ads-to-run' %}">Ads to Run
-                            <span class="badge bg-primary ms-2">8</span></a>
+                            <span class="badge bg-primary ms-2">{{ ads_to_run|length }}</span></a>
 
                         <a class="dropdown-item" href="{% url 'advertiser-running-ads' %}">Running Ads
-                            <span class="badge bg-primary ms-2">8</span></a>
+                            <span class="badge bg-primary ms-2">{{ running_ads|length }}</span></a>
 
                         <a class="dropdown-item" href="{% url 'advertiser-finished-ads' %}">Finished Ads
-                            <span class="badge bg-primary ms-2">8</span></a>
+                            <span class="badge bg-primary ms-2">{{ finished_ads|length }}</span></a>
                     </div>
                     {% elif request.user.is_customer %}
                     <div aria-labelledby="navbarDropdownMenuLink1" class="dropdown-menu">
@@ -128,7 +128,7 @@
                                        {% if search_keyword %}
                                        value="{{ search_keyword }}"
                                        {% endif %}>
-                                <label class="form-label">Search Advertises</label>
+                                <label class="form-label">Search BilBoard Location</label>
                             </div>
                             <button id="search-button" type="button" class="btn btn-primary">
                                 <i class="fas fa-search"></i>
