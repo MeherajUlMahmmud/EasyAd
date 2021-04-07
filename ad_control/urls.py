@@ -3,7 +3,10 @@ from .views import *
 
 urlpatterns = [
     path('post-ad/', post_ad_view, name='post-ad'),
+    path('update-ad/<str:pk>', update_ad_view, name='update-ad'),
+
     path('<str:pk>', ad_detail_view, name='ad-detail'),
+
     path('confirm-order/<str:pk>', confirm_order_view, name='confirm-order'),
     path('order-details/<str:pk>', order_details_view, name='order-details'),
 
