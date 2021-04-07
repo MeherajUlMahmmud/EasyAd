@@ -17,23 +17,24 @@
                     <div class="card-body">
                         <form action="{% url 'contact' %}" method="post">
                             {% csrf_token %}
+
                             <div class="form-outline mb-3">
-                                <input type="text" class="form-control" value="{{request.user.name}}" name="name"/>
+                                <input type="text" class="form-control" value="{{request.user.name}}" name="name" required/>
                                 <label class="form-label">Name</label>
                             </div>
 
                             <div class="form-outline mb-3">
-                                <input type="text" class="form-control" value="{{request.user.email}}" name="email"/>
+                                <input type="text" class="form-control" value="{{request.user.email}}" name="email" required/>
                                 <label class="form-label">Email</label>
                             </div>
 
                             <div class="form-outline mb-3">
-                                <input type="text" class="form-control" name="subject"/>
+                                <input type="text" class="form-control" name="subject" required/>
                                 <label class="form-label">Subject</label>
                             </div>
 
                             <div class="form-outline mb-3">
-                                <textarea type="text" class="form-control" name="message" rows="5"></textarea>
+                                <textarea type="text" class="form-control" name="message" rows="5" required></textarea>
                                 <label class="form-label">Message</label>
                             </div>
 
@@ -44,7 +45,6 @@
                                     </button>
                                 </div>
                             </div>
-
 
                         </form>
                     </div>
