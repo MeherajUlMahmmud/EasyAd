@@ -4,17 +4,37 @@ from .models import *
 
 
 class PostAdForm(ModelForm):
-    image = forms.ImageField(required=True, error_messages={'invalid': "Image files only"}, widget=forms.FileInput)
-    is_active = forms.BooleanField(initial=True)
+    ADVERTISEMENT_TYPE_CHOICES = [
+        ('', 'Advertisement Type'),
+        ('Bill Board', 'Bill Board'),
+        ('Vehicle', 'Vehicle'),
+    ]
+    PRICE_RATE_TYPE_CHOICES = [
+        ('', 'Rate'),
+        ('Day', 'Day'),
+        ('Month', 'Month'),
+    ]
+    SIZE_SCALE_TYPE_CHOICES = [
+        ('', 'Size Scale'),
+        ('Inches', 'Inches'),
+        ('Feet', 'Feet'),
+        ('Meter', 'Meter'),
+    ]
+
+    image = forms.ImageField(required=False, error_messages={'invalid': "Image files only"}, widget=forms.FileInput)
+    price_rate = forms.CharField(widget=forms.Select(choices=PRICE_RATE_TYPE_CHOICES))
+    size_scale = forms.CharField(widget=forms.Select(choices=SIZE_SCALE_TYPE_CHOICES))
+    advertisement_type = forms.CharField(widget=forms.Select(choices=ADVERTISEMENT_TYPE_CHOICES))
 
     class Meta:
         model = AdvertiseModel
         fields = '__all__'
-        exclude = ['user']
+        exclude = ['user', 'is_active']
 
 
 class ConfirmOrderForm(ModelForm):
     PRICE_RATE_TYPE_CHOICES = [
+        ('', 'Rate'),
         ('Day', 'Day'),
         ('Month', 'Month'),
     ]
