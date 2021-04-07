@@ -4,10 +4,9 @@
 
 {% block content %}
 <div class="container">
-    <h4 class="mt-3">Recent Ads</h4>
-    <div class="row  mt-2 ">
-        {% if recent_ads %}
-        {% for ad_item in recent_ads %}
+    <div class="row mt-4 ">
+        {% if ad_list %}
+        {% for ad_item in ad_list %}
         <div class="col">
             <div class="card" style="width: 18rem;">
                 <div class="bg-image">
@@ -61,70 +60,6 @@
         {% endfor%}
         {% else %}
         <p class="mt-5 text-muted">No ads yet.</p>
-        {% endif %}
-    </div>
-    <hr/>
-
-    <h4 class="mt-2">Most Viewed Ads</h4>
-    <div class="row mt-1">
-        {% if most_viewed_ads %}
-        {% for ad_item in most_viewed_ads %}
-        <div class="col">
-            <div class="card">
-                <div class="bg-image">
-
-                    {% if ad_item.image %}
-                    <img
-                            src="{{ ad_item.image.url }}"
-                            class="card-img-top"
-                            alt="..."
-                    />
-                    {% else %}
-                    <img
-                            src="{% static 'assets/images/placeholder.png' %}"
-                            class="card-img-top"
-                            alt="..."
-                    />
-                    {% endif %}
-
-                    <div class="mask" style="background-color: rgba(0, 0, 0, 0.3)">
-                        <div class="d-flex justify-content-center align-items-end h-100">
-                            <p class="text-dark mb-0 fs-6 text-center">
-                                {{ ad_item.width }} x {{ ad_item.height }} {{ ad_item.size_scale }}<br/>
-                                {{ ad_item.price }} BDT per {{ ad_item.price_rate }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-header">
-                    <p><strong>{{ ad_item.advertisement_type }} Size: </strong>{{ ad_item.width }} x
-                        {{ ad_item.height }}
-                        {{ ad_item.size_scale }}<br/>
-                        <strong>Price: </strong>{{ ad_item.price }} BDT per {{ ad_item.price_rate }}</p>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title"><strong>Location: </strong>{{ ad_item.location }}</h5>
-                    <p class="card-text">
-                        <strong>Facing: </strong>{{ ad_item.facing }}<br/>
-
-                        {% if ad_item.additional_note %}
-                        <strong>Additional Note: </strong>{{ ad_item.additional_note|truncatechars:50 }}
-                        {% endif %}
-
-                    </p>
-
-                    <a href="{% url 'ad-detail' ad_item.pk %}" type="button" class="btn btn-primary mb-2">
-                        See More<i class="fas fa-arrow-right ms-2"></i></a>
-
-                    <div class="card-footer">Posted: {{ ad_item.date_posted|timesince }} ago</div>
-                </div>
-            </div>
-        </div>
-
-        {% endfor%}
-        {% else %}
-        <p class="mt-2 text-muted">No ads yet.</p>
         {% endif %}
     </div>
 
