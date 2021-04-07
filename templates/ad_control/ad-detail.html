@@ -43,7 +43,8 @@
                     <div class="card-footer">Posted: {{ ad_item.date_posted|timesince }} ago</div>
                 </div>
                 <div class="card-footer text-muted">
-                    Posted by <span class="text-info mr-2">{{ ad_item.user.name }}</span>
+                    Posted by <a href="{% url 'advertiser-profile' ad_item.user.slug %}" class="text-info mr-2">
+                    {{ ad_item.user.name }}</a>
                 </div>
                 <div>
 
@@ -58,17 +59,19 @@
 
                 {% if request.user == ad_item.user %}
                     <div class="col-6">
-                        <a href="#" class="btn btn-block btn-primary btn-md">Edit Ad</a>
+                        <a href="{% url 'update-ad' ad_item.id %}" class="btn btn-block btn-primary btn-md">Update
+                            Ad</a>
                     </div>
                     <div class="col-6">
-                        <a href="#" class="btn btn-block btn-primary btn-md">Orders</a>
+                        <a href="#"
+                           class="btn btn-block btn-outline-danger btn-md">Delete Ad
+                        </a>
                     </div>
 
                     <br/><br/><br/>
 
                     <div class="col-6">
-                    <a href="#" class="btn btn-block btn-outline-danger btn-md">
-                        Delete Ad</a>
+<!--                    <a href="#" class="btn btn-block btn-secondary btn-md">Orders</a>-->
                 </div>
 
                     {% if ad_item.is_active %}
