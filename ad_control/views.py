@@ -208,7 +208,6 @@ def confirm_order_view(request, pk):
 def order_details_view(request, pk):
     order_item = OrderModel.objects.get(id=pk)
     ad_item = order_item.advertise
-    customer = CustomerModel.objects.get(user=request.user)
 
     pending_orders = get_pending_orders(request)
     unpaid_orders = get_unpaid_orders(request)
@@ -219,7 +218,6 @@ def order_details_view(request, pk):
     context = {
         'order_item': order_item,
         'ad_item': ad_item,
-        'customer': customer,
 
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
@@ -243,14 +241,14 @@ def advertiser_unchecked_order_view(request):
         order_item = OrderModel.objects.get(id=item_id)
         order_item.is_approved = True
         order_item.save()
-        return redirect('unchecked-orders')
+        return redirect('advertiser-unchecked-orders')
 
     if request.GET.get('rejectOrder'):
         item_id = int(request.GET.get('orderID'))
         order_item = OrderModel.objects.get(id=item_id)
         order_item.is_canceled = True
         order_item.save()
-        return redirect('unchecked-orders')
+        return redirect('advertiser-unchecked-orders')
 
     context = {
         'pending_orders': pending_orders,
@@ -270,20 +268,6 @@ def advertiser_unpaid_order_view(request):
     ads_to_run = get_ads_to_run(request)
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
-
-    if request.GET.get('acceptOrder'):
-        item_id = int(request.GET.get('orderID'))
-        order_item = OrderModel.objects.get(id=item_id)
-        order_item.is_approved = True
-        order_item.save()
-        return redirect('unchecked-orders')
-
-    if request.GET.get('rejectOrder'):
-        item_id = int(request.GET.get('orderID'))
-        order_item = OrderModel.objects.get(id=item_id)
-        order_item.is_canceled = True
-        order_item.save()
-        return redirect('unchecked-orders')
 
     context = {
         'pending_orders': pending_orders,
@@ -308,8 +292,9 @@ def advertiser_ads_to_run_view(request):
         order_item = OrderModel.objects.get(id=item_id)
         order_item.advertiser_paid_approval = True
         order_item.is_running = True
+        order_item.is_running = True
         order_item.save()
-        return redirect('advertiser-ads-to-run-orders')
+        return redirect('advertiser-ads-to-run')
 
     context = {
         'pending_orders': pending_orders,
@@ -329,7 +314,7 @@ def advertiser_running_ads_view(request):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
-    if request.GET.get('adFinished'):
+    if request.GET.get('finishAd'):
         item_id = int(request.GET.get('orderID'))
         order_item = OrderModel.objects.get(id=item_id)
         order_item.is_running = False
