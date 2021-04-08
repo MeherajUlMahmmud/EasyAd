@@ -10,7 +10,12 @@ def get_pending_orders(request):
         order_list = list(order_queryset)
         pending_orders = [item for item in order_list
                           if item.customer.user == request.user
-                          and not item.is_approved]
+                          and not item.is_approved
+                          and not item.is_canceled
+                          and not item.advertiser_paid_approval
+                          and not item.customer_paid_approval
+                          and not item.is_running
+                          and not item.is_complete]
     elif request.user.is_authenticated and request.user.is_advertiser:
         advertise_queryset = AdvertiseModel.objects.filter(user=request.user)
         advertise_list = list(advertise_queryset)
@@ -37,7 +42,11 @@ def get_unpaid_orders(request):
         unpaid_orders = [item for item in order_list
                          if item.customer.user == request.user
                          and item.is_approved
-                         and not item.customer_paid_approval]
+                         and not item.is_canceled
+                         and not item.advertiser_paid_approval
+                         and not item.customer_paid_approval
+                         and not item.is_running
+                         and not item.is_complete]
     elif request.user.is_authenticated and request.user.is_advertiser:
         advertise_queryset = AdvertiseModel.objects.filter(user=request.user)
         advertise_list = list(advertise_queryset)
@@ -64,8 +73,11 @@ def get_ads_to_run(request):
         ads_to_run = [item for item in order_list
                       if item.customer.user == request.user
                       and item.is_approved
+                      and not item.is_canceled
+                      and not item.advertiser_paid_approval
                       and item.customer_paid_approval
-                      and not item.is_running]
+                      and not item.is_running
+                      and not item.is_complete]
     elif request.user.is_authenticated and request.user.is_advertiser:
         advertise_queryset = AdvertiseModel.objects.filter(user=request.user)
         advertise_list = list(advertise_queryset)
@@ -92,6 +104,8 @@ def get_running_ads(request):
         running_ads = [item for item in order_list
                        if item.customer.user == request.user
                        and item.is_approved
+                       and not item.is_canceled
+                       and item.advertiser_paid_approval
                        and item.customer_paid_approval
                        and item.is_running
                        and not item.is_complete]
@@ -121,6 +135,8 @@ def get_finished_ads(request):
         finished_ads = [item for item in order_list
                         if item.customer.user == request.user
                         and item.is_approved
+                        and not item.is_canceled
+                        and item.advertiser_paid_approval
                         and item.customer_paid_approval
                         and not item.is_running
                         and item.is_complete]
