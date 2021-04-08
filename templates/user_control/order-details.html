@@ -38,7 +38,7 @@
                     </p>
 
                     <div class="card-footer">Ordered by
-                        <a href="{% url 'customer-profile' request.user.slug %}">
+                        <a href="{% url 'customer-profile' order_item.customer.user.slug %}">
                             {{ order_item.customer.user.name }}
                         </a>,
                         {{ order_item.date_created|timesince }} ago
@@ -84,7 +84,7 @@
                         <strong>Additional Note: </strong>{{ ad_item.additional_note|linebreaksbr }}
                     </p>
 
-                    <div class="card-footer">Posted by <a href="{% url 'advertiser-profile' request.user.slug %}">
+                    <div class="card-footer">Posted by <a href="{% url 'advertiser-profile' ad_item.user.slug %}">
                         {{ ad_item.user.name }}</a>,
                         {{ ad_item.date_posted|timesince }}
                         ago
