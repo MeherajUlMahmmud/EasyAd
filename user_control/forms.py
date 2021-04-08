@@ -53,6 +53,32 @@ class CustomerRegistrationForm(UserCreationForm):
         fields = ("name", "email", "password1", "password2", "is_customer", "check")
 
 
+class AdvertiserEditProfileForm(ModelForm):
+    image = forms.ImageField(
+        required=False,
+        error_messages={'invalid': "Image files only"},
+        widget=forms.FileInput,
+    )
+
+    class Meta:
+        model = AdvertiserModel
+        fields = '__all__'
+        exclude = ['user']
+
+
+class CustomerEditProfileForm(ModelForm):
+    image = forms.ImageField(
+        required=False,
+        error_messages={'invalid': "Image files only"},
+        widget=forms.FileInput,
+    )
+
+    class Meta:
+        model = CustomerModel
+        fields = '__all__'
+        exclude = ['user']
+
+
 class AccountInformationForm(ModelForm):
     class Meta:
         model = User
