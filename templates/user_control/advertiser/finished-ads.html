@@ -5,6 +5,46 @@
 
 {% block content %}
 
+<div class="container">
+    <div class="row">
+        {% for order_item in finished_ads %}
+        <div class="col mt-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <h5 class="card-title fs-6 mt-2"><strong>Order ID: </strong>{{ order_item.id }}</h5>
+                </div>
 
+                <div class="card-body">
+                    <p class="card-text fs-6">
+                        <strong>Ordered by: </strong>{{ order_item.customer.user.name }}<br/>
+                        <strong>Ad Duration: </strong>{{ order_item.duration }} {{ order_item.price_rate }}<br/>
+                        <strong>Total Amount: </strong>{{ order_item.total_cost }} BDT<br/>
+
+                        {% if order_item.additional_note %}
+                        <strong>{{ order_item.customer.user.name }} said: </strong>
+                        {{ order_item.additional_note|truncatechars:75 }}
+                        {% endif %}
+
+                    </p>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="{% url 'order-details' order_item.id %}"
+                                    type="button"
+                                    class="btn btn-outline-primary btn-block mb-3"
+                                    data-mdb-ripple-color="#">Order Details
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <p class="fs-6">Ordered: {{ order_item.date_created|timesince }} ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
 
 {% endblock %}
