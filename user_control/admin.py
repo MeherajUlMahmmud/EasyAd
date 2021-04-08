@@ -45,3 +45,4 @@ class CustomerAdmin(admin.ModelAdmin):
 admin.site.register(User, AccountAdmin)
 admin.site.register(AdvertiserModel, AdvertiserAdmin)
 admin.site.register(CustomerModel, CustomerAdmin)
+admin.site.register(FeedbackModel)
