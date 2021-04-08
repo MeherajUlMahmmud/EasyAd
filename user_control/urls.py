@@ -20,8 +20,8 @@ urlpatterns = [
     path('accounts/customer-profile/<str:slug>/', customer_profile_view, name='customer-profile'),
 
     # advertiser and company profile edit url
-    # path('advertiser/advertiser-edit-profile', advertiser_edit_profile, name='advertiser-edit-profile'),
-    # path('company/company-edit-profile', company_edit_profile, name='company-edit-profile'),
+    path('accounts/advertiser-profile/edit-profile', advertiser_edit_profile, name='advertiser-edit-profile'),
+    path('accounts/customer-profile/edit-profile', customer_edit_profile, name='customer-edit-profile'),
 
     # utilities
     # path('confirm-email-password', authentication_view, name='authentication'),
