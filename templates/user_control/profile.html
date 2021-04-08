@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+<div class="container p-5">
+    {% if user.is_customer %}
+    <div class="row">
+
+        <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+
+            <div class="card mb-3">
+                {% if profile.image %}
+                <img alt="{{ user.name }}" class="card-img-top" src="{{ profile.image.url }}">
+                {% else %}
+                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'assets/images/user-placeholder.png' %}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.name }}</h2>
+
+                </div>
+                <div class="card-footer text-muted" style="text-align: center">
+                    Member Since {{user.date_joined.date}}
+                </div>
+
+                {% if request.user == user %}
+                <div class="card-footer">
+                    <a class="btn btn-primary btn-block" href="{% url 'customer-edit-profile' %}">
+                        <i class="fas fa-pencil-alt me-2"></i>Edit Profile
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-9">
+
+            <div class="card text-left mb-3">
+                <div class="card-header">
+                    <p class="h3">General Information</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 ">
+                            <div class="card w-40">
+                                <div class="card-body">
+                                    <h4 class="card-title">User Information</h4>
+                                    Email: <a href="mailto:{{user.email}}">{{ user.email }}</a><br/>
+                                    Mobile: <a href="tel:{{profile.phone}}">{{ profile.phone }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% elif user.is_advertiser %}
+    <div class="row">
+
+        <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+
+            <div class="card mb-3">
+                {% if user.advertisermodel.image %}
+                <img alt="{{ user.name }}" class="card-img-top" src="{{ user.advertisermodel.image.url }}">
+                {% else %}
+                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'assets/images/user-placeholder.png' %}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.name }}</h2>
+                </div>
+                <div class="card-footer text-muted" style="text-align: center">
+                    Member Since {{user.date_joined.date}}
+                </div>
+
+                {% if request.user == user and user.is_advertiser %}
+                <div class="card-footer">
+                    <a class="btn btn-primary btn-block" href="{% url 'advertiser-edit-profile' %}">
+                        <i class="fas fa-pencil-alt me-2"></i>Edit Profile
+                    </a>
+                </div>
+                {% elif request.user == user and user.is_customer %}
+                <div class="card-footer">
+                    <a class="btn btn-primary btn-block" href="{% url 'customer-edit-profile' %}">
+                        <i class="fas fa-pencil-alt me-2"></i>Edit Profile
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-9">
+
+            <div class="card text-left mb-3">
+                <div class="card-header">
+                    <p class="h3">General Information</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card w-40">
+                                <div class="card-body">
+                                    <h4 class="card-title">User Information</h4>
+                                    Email: <a href="mailto:{{user.email}}">{{ user.email }}</a><br/>
+                                    Mobile: <a href="tel:{{profile.phone}}">{{ profile.phone }}</a><br/>
+                                    Website: <a href="tel:{{profile.phone}}">{{ profile.website }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
