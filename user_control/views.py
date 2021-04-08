@@ -127,23 +127,6 @@ def advertiser_dashboard(request):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
-    search_keyword = request.GET.get('q')
-    if search_keyword is not None:
-        new_list = ad_list
-        ad_list = list(item for item in new_list if search_keyword in item.location.lower())
-
-        context = {
-            'ad_list': ad_list,
-            'search_keyword': search_keyword,
-
-            'pending_orders': pending_orders,
-            'unpaid_orders': unpaid_orders,
-            'ads_to_run': ads_to_run,
-            'running_ads': running_ads,
-            'finished_ads': finished_ads,
-        }
-        return render(request, 'user_control/advertiser/advertiser-dashboard.html', context)
-
     context = {
         'ad_list': ad_list,
 
@@ -203,7 +186,7 @@ def customer_profile_view(request, slug):
     ad_list = list(ad_queryset)
 
     user = User.objects.get(slug=slug)
-    customer = CustomerModel.objects.get(user=user)
+    profile = CustomerModel.objects.get(user=user)
 
     pending_orders = get_pending_orders(request)
     unpaid_orders = get_unpaid_orders(request)
@@ -211,26 +194,9 @@ def customer_profile_view(request, slug):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
-    search_keyword = request.GET.get('q')
-    if search_keyword is not None:
-        new_list = ad_list
-        ad_list = list(item for item in new_list if search_keyword in item.location.lower())
-
-        context = {
-            'ad_list': ad_list,
-            'search_keyword': search_keyword,
-
-            'pending_orders': pending_orders,
-            'unpaid_orders': unpaid_orders,
-            'ads_to_run': ads_to_run,
-            'running_ads': running_ads,
-            'finished_ads': finished_ads,
-        }
-        return render(request, 'user_control/customer/customer-dashboard.html', context)
-
     context = {
         'user': user,
-        'customer': customer,
+        'profile': profile,
 
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
@@ -238,22 +204,23 @@ def customer_profile_view(request, slug):
         'running_ads': running_ads,
         'finished_ads': finished_ads,
     }
-    return render(request, "user_control/customer/customer-profile.html", context)
+    return render(request, "user_control/profile.html", context)
 
 
 @login_required
 def advertiser_profile_view(request, slug):
     user = User.objects.get(slug=slug)
-    advertiser = AdvertiserModel.objects.get(user=user)
+    profile = AdvertiserModel.objects.get(user=user)
 
     pending_orders = get_pending_orders(request)
     unpaid_orders = get_unpaid_orders(request)
     ads_to_run = get_ads_to_run(request)
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
+
     context = {
         'user': user,
-        'advertiser': advertiser,
+        'profile': profile,
 
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
@@ -261,7 +228,47 @@ def advertiser_profile_view(request, slug):
         'running_ads': running_ads,
         'finished_ads': finished_ads,
     }
-    return render(request, "user_control/advertiser/advertiser-profile.html", context)
+    return render(request, "user_control/profile.html", context)
+
+
+@login_required
+def advertiser_edit_profile(request):
+    profile = AdvertiserModel.objects.get(user=request.user)
+
+    form = AdvertiserEditProfileForm(instance=profile)
+    if request.method == 'POST':
+        form = AdvertiserEditProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('advertiser-profile', request.user.slug)
+        else:
+            return redirect('edit-profile')
+
+    context = {
+        'form': form,
+        'profile': profile,
+    }
+    return render(request, 'user_control/edit-profile.html', context)
+
+
+@login_required
+def customer_edit_profile(request):
+    profile = CustomerModel.objects.get(user=request.user)
+
+    form = CustomerEditProfileForm(instance=profile)
+    if request.method == 'POST':
+        form = CustomerEditProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('customer-profile', request.user.slug)
+        else:
+            return redirect('edit-profile')
+
+    context = {
+        'form': form,
+        'profile': profile,
+    }
+    return render(request, 'user_control/edit-profile.html', context)
 
 
 def about_view(request):
@@ -299,14 +306,15 @@ def contact_view(request):
         email_add = request.POST['email']
         subject = request.POST['subject']
         message = request.POST['message']
+        FeedbackModel.objects.create(name=name, email=email_add, subject=subject, message=message)
 
-        send_mail(
-            subject + ' from ' + name,
-            message,
-            email_add,
-            ['officialjobland777@gmail.com', ],
-            # the mail address that the email will be sent to
-        )
+        # send_mail(
+        #     subject + ' from ' + name,
+        #     message,
+        #     email_add,
+        #     ['officialjobland777@gmail.com', ],
+        #     # the mail address that the email will be sent to
+        # )
         messages.success(request, "Feedback sent successfully.")
 
         return render(request, 'contact.html', context)
