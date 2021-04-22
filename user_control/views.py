@@ -14,9 +14,7 @@ from user_control.utils import *
 
 @unauthenticated_user
 def home_view(request):
-    context = {
-    }
-    return render(request, 'user_control/index.html', context)
+    return render(request, 'user_control/index.html')
 
 
 @unauthenticated_user
