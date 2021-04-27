@@ -19,7 +19,15 @@ $ .\venv\Scripts\activate
 ```
 $ pip install -r requirements.txt
 ```
-### 5. And start your server
+### 5. Make Database Migrations
+```
+$ py manage.py makemigrations
+```
+### 6. Migrate to Database
+```
+$ py manage.py migrate
+```
+### 7. And start your server
 ```
 $ py manage.py runserver
 ```
