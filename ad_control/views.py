@@ -246,8 +246,7 @@ def advertiser_unchecked_order_view(request):
     if request.GET.get('rejectOrder'):
         item_id = int(request.GET.get('orderID'))
         order_item = OrderModel.objects.get(id=item_id)
-        order_item.is_canceled = True
-        order_item.save()
+        order_item.delete()
         return redirect('advertiser-unchecked-orders')
 
     context = {
@@ -361,8 +360,7 @@ def customer_pending_order_view(request):
     if request.GET.get('cancelOrder'):
         item_id = int(request.GET.get('orderID'))
         order_item = OrderModel.objects.get(id=item_id)
-        order_item.is_canceled = True
-        order_item.save()
+        order_item.delete()
         return redirect('customer-pending-orders')
 
     context = {
