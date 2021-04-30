@@ -51,11 +51,6 @@
                         <div class="card-body">
                             <p class="card-text fs-6">
                                 <strong>Facing: </strong>{{ ad_item.facing }}<br/>
-
-                                {% if ad_item.additional_note %}
-                                <strong>Additional Note: </strong>{{ ad_item.additional_note|truncatechars:50 }}
-                                {% endif %}
-
                             </p>
 
                             <a href="{% url 'ad-detail' ad_item.pk %}" type="button" class="btn btn-primary mb-2">
