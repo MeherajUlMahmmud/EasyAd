@@ -8,8 +8,9 @@
 <div class="container">
     <div class="row mt-4 ">
         {% if ad_list %}
+
         {% for ad_item in ad_list %}
-        <div class="col">
+        <div class="col-lg-4">
             <div class="card" style="width: 18rem;">
                 <div class="bg-image">
 
@@ -38,15 +39,12 @@
                 </div>
 
                 <div class="card-header">
-                    <h5 class="card-title fs-6"><strong>Location: </strong>{{ ad_item.location }}</h5>
+                    <p class="card-title fs-6"><strong>Location: </strong> {{ ad_item.location }}</p>
                 </div>
                 <div class="card-body">
                     <p class="card-text fs-6">
                         <strong>Facing: </strong>{{ ad_item.facing }}<br/>
 
-                        {% if ad_item.additional_note %}
-                        <strong>Additional Note: </strong>{{ ad_item.additional_note|truncatechars:50 }}
-                        {% endif %}
                     </p>
 
                     <a href="{% url 'ad-detail' ad_item.pk %}" type="button" class="btn btn-primary mb-2">
@@ -58,8 +56,8 @@
                 </div>
             </div>
         </div>
-
         {% endfor%}
+
         {% else %}
         <p class="mt-5 text-muted">No ads yet.</p>
         {% endif %}
