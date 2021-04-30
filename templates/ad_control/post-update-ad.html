@@ -6,128 +6,119 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-8 mt-4">
-            <div class="card my-4">
-                <div class="col-lg-12">
-                    <div class="card-header">
-                        <h3 class="text-black">{{ task }} Advertisement</h3>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ form.media }}
+        <div class="mt-4 d-flex justify-content-center">
 
-                            <div class="row form-group">
-                                <div class="col-md-12 mb-3">
-                                    {{ form.image|add_class:"form-control" }}
-                                    {% for error in form.image.errors %}
-                                    <li class="small text-danger">{{ error }}
-                                    </li>
-                                    {% endfor %}
-                                </div>
-                            </div>
+            <div class=" my-4" style=" background-color: transparent;">
 
-
-                            <div class="row form-group">
-                                <div class="col-md-12 mb-3">
-                                    {{ form.location|add_class:"form-control" }}
-                                    {% for error in form.location.errors %}
-                                    <li class="small text-danger">{{ error }}
-                                    </li>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-
-                            <div class="row form-group">
-                                <div class="col-md-12 mb-3">
-                                    {{ form.facing|add_class:"form-control" }}
-                                    {% for error in form.facing.errors %}
-                                    <li class="small text-danger">{{ error }}
-                                    </li>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-
-                            <div class="row form-group">
-                                <div class="col-md-12 mb-3">
-                                    {{ form.price|add_class:"form-control" }}
-                                    {% for error in form.price.errors %}
-                                    <li class="small text-danger">{{ error }}
-                                    </li>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-
-                            <div class="row form-group">
-                                <div class="col-md-12 mb-3">
-                                    {{ form.price_rate|add_class:"form-control" }}
-                                    {% for error in form.price_rate.errors %}
-                                    <li class="small text-danger">{{ error }}
-                                    </li>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-
-                            <div class="row form-group">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        {{ form.height|add_class:"form-control" }}
-                                        {% for error in form.height.errors %}
-                                        <li class="small text-danger">{{ error }}
-                                        </li>
-                                        {% endfor %}
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        {{ form.width|add_class:"form-control" }}
-                                        {% for error in form.width.errors %}
-                                        <li class="small text-danger">{{ error }}
-                                        </li>
-                                        {% endfor %}
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        {{ form.size_scale|add_class:"form-control" }}
-                                        {% for error in form.size_scale.errors %}
-                                        <li class="small text-danger">{{ error }}
-                                        </li>
-                                        {% endfor %}
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-                            <div class="row form-group">
-                                <div class="col-md-12 mb-3">
-                                    {{ form.advertisement_type|add_class:"form-control" }}
-                                    {% for error in form.advertisement_type.errors %}
-                                    <li class="small text-danger">{{ error }}
-                                    </li>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-
-                            <div class="row form-group">
-                                <div class="col-md-12 mb-3">
-                                    {% render_field form.additional_note class="form-control" placeholder="Additional Note" %}
-                                    {% for error in form.additional_note.errors %}
-                                    <li class="small text-danger">{{ error }}
-                                    </li>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-success btn-lg btn-block">{{ task }} Ad</button>
-
-                        </form>
-                    </div>
+                <div class="card-header text-center">
+                    <h3 class="text-black">{{ task }} Advertisement</h3>
                 </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.media }}
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                {{ form.image|add_class:"form-control" }}
+                                {% for error in form.image.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                {{ form.location|add_class:"form-control" }}
+                                {% for error in form.location.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                {{ form.facing|add_class:"form-control" }}
+                                {% for error in form.facing.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                {{ form.price|add_class:"form-control" }}
+                                {% for error in form.price.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                {{ form.price_rate|add_class:"form-control" }}
+                                {% for error in form.price_rate.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-4 mb-3">
+                                {{ form.height|add_class:"form-control" }}
+                                {% for error in form.height.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                {{ form.width|add_class:"form-control" }}
+                                {% for error in form.width.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                {{ form.size_scale|add_class:"form-control" }}
+                                {% for error in form.size_scale.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                {{ form.advertisement_type|add_class:"form-control" }}
+                                {% for error in form.advertisement_type.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12 mb-3">
+                                {% render_field form.additional_note class="form-control" placeholder="Additional Note" %}
+                                {% for error in form.additional_note.errors %}
+                                <li class="small text-danger">{{ error }}
+                                </li>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg btn-block">{{ task }} Ad</button>
+
+                    </form>
+                </div>
+
             </div>
         </div>
 
@@ -139,12 +130,13 @@
 <script>
     const form_fields = document.getElementsByTagName("input")
 
-    form_fields[3].placeholder = 'Location';
-    form_fields[4].placeholder = 'Facing';
-    form_fields[5].placeholder = 'Price';
-    form_fields[6].placeholder = 'Height';
-    form_fields[7].placeholder = 'Width';
-    form_fields[9].placeholder = 'Additional Note';
+    form_fields[2].placeholder = 'Location';
+    form_fields[3].placeholder = 'Facing';
+    form_fields[4].placeholder = 'Price';
+    form_fields[5].placeholder = 'Height';
+    form_fields[6].placeholder = 'Width';
+    form_fields[7].placeholder = 'Additional Note';
+
 
 </script>
 
