@@ -8,27 +8,16 @@
 <div class="container">
     <div class="row">
 
-<!--        <div class="col-md-6">-->
-<!--            <div class="mt-5">-->
-<!--                <a class="ripple" href="#">-->
-<!--                    <img-->
-<!--                            alt="example"-->
-<!--                            class="img-fluid rounded"-->
-<!--                            src="{% static 'assets/images/billboard-right.jpg' %}"-->
-<!--                            style="height: 70vh; width: 100%;"-->
-<!--                    />-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
-
         <div class="d-flex justify-content-center mt-2">
             <div class="card mb-4 mt-4">
+
                 <div class="card-header text-center note-info">
                     Create A Customer Account
                 </div>
                 <div class="card-body">
                     <form method="POST">
                         {% csrf_token %}
+
                         <div class="row form-group">
                             <div class="col-md-12 mb-3 mb-md-0">
                                 {{ customer_form.email|add_class:"form-control" }}
@@ -96,6 +85,7 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
