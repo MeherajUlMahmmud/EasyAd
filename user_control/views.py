@@ -149,6 +149,12 @@ def customer_dashboard(request):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
+    order_queryset = OrderModel.objects.all()
+    order_list = list(order_queryset)
+    ordered_ad_list = [order.advertise for order in order_list]
+
+    ad_list = [ad for ad in ad_list if ad not in ordered_ad_list]
+
     search_keyword = request.GET.get('q')
     if search_keyword is not None:
         new_list = ad_list
