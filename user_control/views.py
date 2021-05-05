@@ -116,7 +116,7 @@ def customer_signup_view(request):
 @login_required
 @show_to_advertiser(allowed_roles=['admin', 'is_advertiser'])
 def advertiser_dashboard(request):
-    ad_queryset = AdvertiseModel.objects.all()
+    ad_queryset = AdvertiseModel.objects.filter(user=request.user)
     ad_list = list(ad_queryset)
 
     pending_orders = get_pending_orders(request)
