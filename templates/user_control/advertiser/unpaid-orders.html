@@ -8,6 +8,9 @@
 
 <div class="container">
     <div class="row">
+        {% if not unpaid_orders %}
+        <h3 class="mt-3">No Unpaid Ads</h3>
+        {% else %}
         {% for order_item in unpaid_orders %}
         <div class="col mt-4">
             <div class="card" style="width: 18rem;">
@@ -87,6 +90,7 @@
             </div>
         </div>
         {% endfor%}
+        {% endif %}
     </div>
 </div>
 
