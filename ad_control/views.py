@@ -259,7 +259,6 @@ def advertiser_unchecked_order_view(request):
     return render(request, 'user_control/advertiser/unchecked-orders.html', context)
 
 
-# TODO
 @login_required
 def advertiser_unpaid_order_view(request):
     pending_orders = get_pending_orders(request)
