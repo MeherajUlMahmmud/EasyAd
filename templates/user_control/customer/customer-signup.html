@@ -14,6 +14,7 @@
                 <div class="card-header text-center note-info">
                     Create A Customer Account
                 </div>
+
                 <div class="card-body">
                     <form method="POST">
                         {% csrf_token %}
@@ -128,10 +129,6 @@
     form_fields[2].placeholder = 'Name';
     form_fields[3].placeholder = 'Password';
     form_fields[4].placeholder = 'Confirm Password';
-
-
-
-
 </script>
 
 {% endblock %}
