@@ -1,5 +1,5 @@
 from django.db import models
-from user_control.models import User, CustomerModel
+from user_control.models import AdvertiserModel, CustomerModel
 
 
 class AdvertiseModel(models.Model):
@@ -19,7 +19,7 @@ class AdvertiseModel(models.Model):
         ('Meter', 'Meter'),
     ]
 
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    advertiser = models.ForeignKey(AdvertiserModel, null=True, blank=True, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     location = models.CharField(max_length=255)
     facing = models.CharField(max_length=255, null=True, blank=True)
