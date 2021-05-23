@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 from ad_control.forms import *
 from ad_control.models import *
+from user_control.models import AdvertiserModel
 from user_control.utils import *
 
 
@@ -16,12 +17,15 @@ def post_ad_view(request):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
+    user = request.user
+    advertiser = AdvertiserModel.objects.get(user=user)
+
     form = PostAdForm()
     if request.method == 'POST':
         form = PostAdForm(request.POST, request.FILES)
         if form.is_valid():
             new_ad = form.save(commit=False)
-            new_ad.user = request.user
+            new_ad.advertiser = advertiser
             form.save()
             return redirect('home')
         else:
@@ -103,10 +107,15 @@ def ad_detail_view(request, pk):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
+    customer = CustomerModel.objects.get(user=request.user)
+
+    is_ordered = False
     try:
-        customer_ordered = OrderModel.objects.get(customer=request.user, advertise=ad_item)
+        order = OrderModel.objects.get(advertise=ad_item, customer=customer)
     except:
-        customer_ordered = None
+        order = None
+    if order is not None and not order.is_complete:
+        is_ordered = True
 
     location_link = "https://maps.google.com/maps?width=100%25&amp;height=450&amp;hl=en&amp;q="
 
@@ -132,7 +141,7 @@ def ad_detail_view(request, pk):
     context = {
         'ad_item': ad_item,
         'location_link': location_link,
-        'customer_ordered': customer_ordered,
+        'is_ordered': is_ordered,
 
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
@@ -209,15 +218,31 @@ def order_details_view(request, pk):
     order_item = OrderModel.objects.get(id=pk)
     ad_item = order_item.advertise
 
+    try:
+        order_payment_item = OrderPaymentModel.objects.get(order=order_item)
+    except:
+        order_payment_item = None
+
+    is_customer = False
+    if request.user.is_customer:
+        is_customer = True
+
     pending_orders = get_pending_orders(request)
     unpaid_orders = get_unpaid_orders(request)
     ads_to_run = get_ads_to_run(request)
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
+    if request.GET.get('confirmPayment'):
+        order_item.advertiser_paid_approval = True
+        order_item.save()
+        return redirect('advertiser-unpaid-orders')
+
     context = {
         'order_item': order_item,
         'ad_item': ad_item,
+        'order_payment_item': order_payment_item,
+        'is_customer': is_customer,
 
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
