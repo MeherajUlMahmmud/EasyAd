@@ -43,8 +43,7 @@
                     <div class="card-footer">Posted: {{ ad_item.date_posted|timesince }} ago</div>
                 </div>
                 <div class="card-footer text-muted">
-                    Posted by <a href="{% url 'advertiser-profile' ad_item.user.slug %}" class="text-info mr-2">
-                    {{ ad_item.user.name }}</a>
+                    Posted by <b>{{ ad_item.advertiser.user.name }}</b>
                 </div>
                 <div>
 
@@ -70,10 +69,6 @@
 
                 <br/><br/><br/>
 
-                <div class="col-6">
-                    <!--                    <a href="#" class="btn btn-block btn-secondary btn-md">Orders</a>-->
-                </div>
-
                 {% if ad_item.is_active %}
                 <div class="col-12">
                     <form method="GET">
@@ -92,28 +87,34 @@
 
                 {% else %}
                 <div class="col-md-12">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Contact {{ ad_item.advertisement_type }} Owner</h5>
-                            <p class="card-text">
-                                <strong>Phone: </strong>
-                                <a href="tel:{{ ad_item.user.advertisermodel.phone }}">
-                                    {{ ad_item.user.advertisermodel.phone }}</a><br/>
-                                <strong>Email: </strong>
-                                <a href="mailto:{{ ad_item.user.email }}">{{ ad_item.user.email }}</a>
-                            </p>
-                        </div>
-                    </div>
+                    <!--                    <div class="card mb-3">-->
+                    <!--                        <div class="card-body">-->
+                    <!--                            <h5 class="card-title">Contact {{ ad_item.advertisement_type }} Owner</h5>-->
+                    <!--                            <p class="card-text">-->
+                    <!--                                <strong>Phone: </strong>-->
+                    <!--                                <a href="tel:{{ ad_item.user.advertisermodel.phone }}">-->
+                    <!--                                    {{ ad_item.user.advertisermodel.phone }}</a><br/>-->
+                    <!--                                <strong>Email: </strong>-->
+                    <!--                                <a href="mailto:{{ ad_item.user.email }}">{{ ad_item.user.email }}</a>-->
+                    <!--                            </p>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
 
                     <form method="GET" action="">
                         <div class="col-12">
-                            {% if customer_ordered is not None %}
-                            <button class="btn btn-block btn-outline-danger" name="cancelOrder"
-                                    type="submit">Cancel Order
-                            </button>
+                            {% if is_ordered %}
+                            <!--                            <button class="btn btn-block btn-outline-danger" name="cancelOrder"-->
+                            <!--                                    type="submit">Cancel Order-->
+                            <!--                            </button>-->
+
+                            <p class="note note-info">
+                                You have an incomplete order for this Ad. Wait until the order
+                                is complete to order this Ad again. Thank You
+                            </p>
                             {% else %}
-                            <a class="btn btn-block btn-primary" href="{% url 'confirm-order' ad_item.id %}">Order
-                                Now</a>
+                            <a class="btn btn-block btn-primary" href="{% url 'confirm-order' ad_item.id %}">
+                                Order Now
+                            </a>
                             {% endif %}
                         </div>
                     </form>
