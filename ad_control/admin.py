@@ -3,14 +3,14 @@ from .models import *
 
 
 class AdvertiseAdmin(admin.ModelAdmin):
-    list_display = ('user', 'location', 'height', 'width', 'price')
-    search_fields = ('user', 'location',)
+    list_display = ('advertiser', 'location', 'height', 'width', 'price')
+    search_fields = ('advertiser', 'location',)
     readonly_fields = ()
 
     filter_horizontal = ()
     ordering = ('-date_posted',)
     fieldsets = ()
-    list_filter = ('user', 'location', 'height', 'width')
+    list_filter = ('advertiser', 'location', 'height', 'width')
 
 
 class OrderModelAdmin(admin.ModelAdmin):
