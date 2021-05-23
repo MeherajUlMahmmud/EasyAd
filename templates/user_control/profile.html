@@ -10,7 +10,7 @@
     {% if user.is_customer %}
     <div class="row">
 
-        <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+        <div class="col-md-4">
 
             <div class="card mb-3">
                 {% if profile.image %}
@@ -20,7 +20,6 @@
                 {% endif %}
                 <div class="card-body">
                     <h2 class="card-title">{{ user.name }}</h2>
-
                 </div>
                 <div class="card-footer text-muted" style="text-align: center">
                     Member Since {{user.date_joined.date}}
@@ -37,8 +36,7 @@
 
         </div>
 
-
-        <div class="col-md-6">
+        <div class="col-md-8">
 
             <div class=" text-left mb-3">
                 <div class="card-header">
@@ -49,14 +47,101 @@
                         <div class="col-12 ">
                             <div class="card w-40">
                                 <div class="card-body">
-                                    <h4 class="card-title">User Information</h4>
                                     Email: <a href="mailto:{{user.email}}">{{ user.email }}</a><br/>
+                                    {% if profile.phone %}
                                     Mobile: <a href="tel:{{profile.phone}}">{{ profile.phone }}</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <hr/>
+
+
+            <!-- Tabs navs -->
+            <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a
+                            class="nav-link active"
+                            id="ex1-tab-1"
+                            data-mdb-toggle="tab"
+                            href="#ex1-tabs-1"
+                            role="tab"
+                            aria-controls="ex1-tabs-1"
+                            aria-selected="true"
+                    >
+                        Order History
+                    </a>
+                </li>
+
+            </ul>
+            <!-- Tabs navs -->
+
+            <!-- Tabs content -->
+            <div class="tab-content" id="ex1-content">
+
+                <div
+                        class="tab-pane fade show active"
+                        id="ex1-tabs-1"
+                        role="tabpanel"
+                        aria-labelledby="ex1-tab-1"
+                >
+                    {% if orders %}
+                    {% for order in orders %}
+                    <div class="card text-left mb-3">
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    {% if order.image %}
+                                    <img src="{{ order.image.url }}"
+                                         class="img-thumbnail"
+                                         alt="order banner"
+                                         style="height: 200px;"
+                                    />
+                                    {% else %}
+                                    <img
+                                            src="{% static 'assets/images/placeholder.png' %}"
+                                            class="card-img-top"
+                                            alt="order banner"
+                                            style="height: 200px;"
+                                    />
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="h5"><b>Order ID: </b> {{ order.id }}</p>
+                                    <p>
+                                        <strong>Ad Duration: </strong>
+                                        {{ order.duration }}
+                                        {{ order.price_rate }}
+                                    <p/>
+                                    <p>
+                                        <strong>Total Cost: </strong>{{ order.total_cost }}
+                                    </p>
+
+                                    <a class="btn btn-primary rounded"
+                                       href="{% url 'order-details' order.id %}">
+                                        See Details <i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer text-muted">
+                            Ordered by <b>{{ order.customer.user.name }}</b> on <b>{{ order.date_created }}</b>
+                        </div>
+
+                    </div>
+                    {% endfor%}
+                    {% else %}
+                    No orders completed yet.
+                    {% endif %}
+                </div>
+
             </div>
         </div>
 
@@ -65,13 +150,25 @@
     {% elif user.is_advertiser %}
     <div class="row">
 
-        <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+        <div class="col-md-4">
 
             <div class="card mb-3">
+
                 {% if user.advertisermodel.image %}
-                <img alt="{{ user.name }}" class="card-img-top" src="{{ user.advertisermodel.image.url }}">
+                <img
+                        alt="{{ user.name }}"
+                        class="card-img-top"
+                        src="{{ user.advertisermodel.image.url }}"
+                        height="200px"
+                >
+
                 {% else %}
-                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'assets/images/user-placeholder.png' %}">
+                <img
+                        alt="{{ user.name }}"
+                        class="card-img-top"
+                        src="{% static 'assets/images/user-placeholder.png' %}"
+                        height="200px"
+                >
                 {% endif %}
                 <div class="card-body">
                     <h2 class="card-title">{{ user.name }}</h2>
@@ -94,27 +191,34 @@
                 </div>
                 {% endif %}
             </div>
+            {% if profile.website %}
             <div class="d-flex justify-content-center">
                 <a class="btn btn-primary" href="{{ profile.website }}">Visit Us!</a>
             </div>
+            {% endif %}
 
         </div>
 
 
-        <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-9">
+        <div class="col-md-8">
 
             <div class="card text-left mb-3">
                 <div class="card-header">
                     <p class="h3">General Information</p>
                 </div>
+
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
                             <div class=" w-40">
                                 <div class="card-body">
-                                    <h4 class="card-title">User Information</h4>
                                     Email: <a href="mailto:{{user.email}}">{{ user.email }}</a><br/>
+                                    {% if profile.phone %}
                                     Mobile: <a href="tel:{{profile.phone}}">{{ profile.phone }}</a>
+
+                                    {% else %}
+                                    Mobile: <a href="{% url 'advertiser-edit-profile' %}">Add Now</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -123,6 +227,161 @@
             </div>
 
             <hr/>
+
+            <!-- Tabs navs -->
+            <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a
+                            class="nav-link active"
+                            id="ex1-tab-1"
+                            data-mdb-toggle="tab"
+                            href="#ex1-tabs-1"
+                            role="tab"
+                            aria-controls="ex1-tabs-1"
+                            aria-selected="true"
+                    >
+                        Ads
+                    </a>
+                </li>
+
+                <li class="nav-item" role="presentation">
+                    <a
+                            class="nav-link"
+                            id="ex1-tab-2"
+                            data-mdb-toggle="tab"
+                            href="#ex1-tabs-2"
+                            role="tab"
+                            aria-controls="ex1-tabs-2"
+                            aria-selected="false"
+                    >
+                        Order History
+                    </a>
+                </li>
+
+            </ul>
+            <!-- Tabs navs -->
+
+            <!-- Tabs content -->
+            <div class="tab-content" id="ex1-content">
+
+                <div
+                        class="tab-pane fade show active"
+                        id="ex1-tabs-1"
+                        role="tabpanel"
+                        aria-labelledby="ex1-tab-1"
+                >
+                    {% if ads %}
+                    {% for ad in ads %}
+                    <div class="card text-left mb-3">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {% if ad.image %}
+                                    <img src="{{ ad.image.url }}"
+                                         class="card-img-top"
+                                         alt="{{ ad.name }}"
+                                         style="height: 200px;"
+                                    />
+                                    {% else %}
+                                    <img
+                                            src="{% static 'assets/images/placeholder.png' %}"
+                                            class="card-img-top"
+                                            alt="{{ ad.name }}"
+                                            style="height: 200px;"
+                                    />
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>{{ ad.advertisement_type }} Size: </strong>
+                                        {{ ad.width }} x {{ ad.height }} {{ ad.size_scale }}</p>
+
+                                    <p><strong>Price: </strong>{{ ad.price }} BDT per {{ ad.price_rate }}</p>
+
+                                    <p><strong>Location: </strong>{{ ad.location }}</p>
+
+                                    <p><strong>Facing: </strong>{{ ad.facing }}</p>
+
+                                    <a class="btn btn-primary rounded"
+                                       href="{% url 'ad-detail' ad.pk %}">
+                                        See Details <i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer text-muted">
+                            Posted on <b>{{ ad.date_posted }}</b>
+                        </div>
+
+                    </div>
+                    {% endfor%}
+
+                    {% else %}
+                    No Ads Yet.
+                    {% endif %}
+                </div>
+
+                <div
+                        class="tab-pane fade"
+                        id="ex1-tabs-2"
+                        role="tabpanel"
+                        aria-labelledby="ex1-tab-2">
+                    {% if orders %}
+                    {% for order in orders %}
+                    <div class="card text-left mb-3">
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    {% if order.image %}
+                                    <img src="{{ order.image.url }}"
+                                         class="img-thumbnail"
+                                         alt="order banner"
+                                         style="height: 200px;"
+                                    />
+                                    {% else %}
+                                    <img
+                                            src="{% static 'assets/images/placeholder.png' %}"
+                                            class="card-img-top"
+                                            alt="order banner"
+                                            style="height: 200px;"
+                                    />
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="h5"><b>Order ID: </b> {{ order.id }}</p>
+                                    <p>
+                                        <strong>Ad Duration: </strong>
+                                        {{ order.duration }}
+                                        {{ order.price_rate }}
+                                    <p/>
+                                    <p>
+                                        <strong>Total Cost: </strong>{{ order.total_cost }}
+                                    </p>
+
+                                    <a class="btn btn-primary rounded"
+                                       href="{% url 'order-details' order.id %}">
+                                        See Details <i class="fas fa-arrow-right ms-2"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer text-muted">
+                            Ordered by <b>{{ order.customer.user.name }}</b> on <b>{{ order.date_created }}</b>
+                        </div>
+
+                    </div>
+                    {% endfor%}
+                    {% else %}
+                    No orders completed yet.
+                    {% endif %}
+                </div>
+
+            </div>
 
         </div>
     </div>

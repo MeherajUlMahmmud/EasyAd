@@ -34,7 +34,7 @@
                                 class="btn btn-outline-success btn-rounded  btn-sm"
                                 data-mdb-ripple-color="#000000"
                                 data-mdb-toggle="modal"
-                                data-mdb-target="#exampleModal"
+                                data-mdb-target="#modal-payment-{{ order_item.id }}"
                         > ....
                         </button>
                         {% endifnotequal %}
@@ -44,7 +44,7 @@
                         <!-- Modal -->
                     <div
                             class="modal fade"
-                            id="exampleModal"
+                            id="modal-payment-{{ order_item.id }}"
                             tabindex="-1"
                             aria-labelledby="exampleModalLabel"
                             aria-hidden="true">

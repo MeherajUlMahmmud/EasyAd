@@ -10,7 +10,7 @@
         {% if ad_list %}
 
         {% for ad_item in ad_list %}
-        <div class="col-lg-4">
+        <div class="col-lg-4 mb-3">
             <div class="card" style="width: 18rem;">
                 <div class="bg-image">
 
@@ -18,13 +18,15 @@
                     <img
                             src="{{ ad_item.image.url }}"
                             class="card-img-top"
-                            alt="..."
+                            alt="Ad ID {{ ad_item.id }}"
+                            height="200px"
                     />
                     {% else %}
                     <img
                             src="{% static 'assets/images/placeholder.png' %}"
                             class="card-img-top"
-                            alt="..."
+                            alt="Ad ID {{ ad_item.id }}"
+                            height="200px"
                     />
                     {% endif %}
 

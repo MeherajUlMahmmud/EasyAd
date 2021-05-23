@@ -10,13 +10,23 @@
     {% if user.is_customer %}
     <div class="row">
 
-        <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+        <div class="col-md-4">
 
             <div class="card mb-3">
                 {% if profile.image %}
-                <img alt="{{ user.name }}" class="card-img-top" src="{{profile.image.url}}">
+                <img
+                        alt="{{ user.name }}"
+                        class="card-img-top"
+                        src="{{profile.image.url}}"
+                        height="200px"
+                >
                 {% else %}
-                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'assets/images/user-placeholder.png' %}">
+                <img
+                        alt="{{ user.name }}"
+                        class="card-img-top"
+                        src="{% static 'assets/images/user-placeholder.png' %}"
+                        height="200px"
+                >
                 {% endif %}
                 <div class="card-body">
                     <h2 class="card-title">{{ request.user.name }}</h2>
@@ -29,7 +39,7 @@
         </div>
 
 
-        <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-9">
+        <div class="col-md-8">
 
             <div class="card text-left mb-3">
                 <div class="card-header">

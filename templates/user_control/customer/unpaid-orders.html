@@ -20,13 +20,13 @@
 
                 <div class="card-body">
                     <p class="card-text fs-6">
-                        <strong>Advertiser: </strong><a href="#">{{ order_item.advertise.user.name }}</a><br/>
+                        <strong>Advertiser: </strong> {{ order_item.advertise.advertise.user.name }} <br/>
                         <strong>Ad Duration: </strong>{{ order_item.duration }} {{ order_item.price_rate }}<br/>
                         <strong>Total Due Amount: </strong>{{ order_item.total_cost }} BDT<br/>
 
                         <!-- Modal -->
                     <div class="modal fade"
-                         id="exampleModal"
+                         id="modal-payment-{{ order_item.id }}"
                          tabindex="-1"
                          aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
@@ -42,7 +42,15 @@
                                     ></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h3>Procedure will go here </h3>
+                                    <ol>
+                                        <li>Send Money to
+                                            <b>{{ order_item.advertise.advertiser.phone }} via bKash</b></li>
+                                        <li>Enter Order ID as Reference</li>
+                                        <li>Enter your Transaction ID and Phone Number here</li>
+                                        <li>Confirm your Payment</li>
+                                    </ol>
+                                    <h4>We will get back to you.</h4>
+
                                     <div class="card-body">
                                         <form method="GET" action="">
                                             <div class="form-outline mb-3">
@@ -78,13 +86,14 @@
                     </div>
                     </p>
 
-                    {% if not order_item.transaction_id %}
+                    {% if not order_item.customer_paid_approval %}
                     <button
                             type="button"
+                            id="payNow"
                             class="btn btn-outline-success mb-3"
                             data-mdb-ripple-color="#000000"
                             data-mdb-toggle="modal"
-                            data-mdb-target="#exampleModal"> Pay Now
+                            data-mdb-target="#modal-payment-{{ order_item.id }}"> Pay Now
                     </button>
                     {% else %}
                     <p class="note-success">Transaction ID Submitted. Waiting for approval.</p>

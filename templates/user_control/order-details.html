@@ -27,9 +27,28 @@
 
 
                 <div class="card-header">
-                    <p><strong>Ad Duration: </strong>{{ order_item.duration }} {{ order_item.price_rate }}<br/>
+                    <p><strong>Ad Duration: </strong>{{ order_item.duration }} {{ order_item.price_rate }}<p/>
+                    <p>
                         <strong>Total Cost: </strong>{{ order_item.total_cost }}
                     </p>
+
+                    {% if not is_customer and order_payment_item is not None %}
+                    <hr/>
+                    <p><strong>Payment Completed: </strong>{{ order_payment_item.date_time }}</p>
+                    <p><strong>Transaction ID: </strong>{{ order_payment_item.transaction_id }}</p>
+                    <p><strong>Phone Number: </strong>{{ order_payment_item.phone_number }}</p>
+
+                    {% if not order_item.advertiser_paid_approval %}
+                    <form method="get">
+                        <input
+                                type="submit"
+                                name="confirmPayment"
+                                class="btn btn-success mb-2"
+                                value="Confirm Payment"/>
+                    </form>
+                    {% endif %}
+
+                    {% endif %}
                 </div>
 
                 <div class="card-body">
@@ -37,11 +56,11 @@
                         <strong>Additional Note: </strong>{{ order_item.additional_note|linebreaksbr }}
                     </p>
 
-                    <div class="card-footer">Ordered by
-                        <a href="{% url 'customer-profile' order_item.customer.user.slug %}">
-                            {{ order_item.customer.user.name }}
-                        </a>,
-                        {{ order_item.date_created|timesince }} ago
+                    <div class="card-footer">
+                        <p>Ordered by
+                            <b>{{ order_item.customer.user.name }}</b>,
+                            {{ order_item.date_created|timesince }} ago
+                        </p>
                     </div>
                 </div>
             </div>
@@ -51,7 +70,9 @@
         <div class="col-md-6">
 
             <div class="card mb-4 mt-4">
-                <p class="text-center bold fs-5">{{ ad_item.advertisement_type }} Details</p>
+                <a class="text-center bold fs-5 mb-3" href="{% url 'ad-detail' ad_item.pk %}">
+                    {{ ad_item.advertisement_type }} Details
+                </a>
                 {% if ad_item.image %}
                 <img src="{{ ad_item.image.url }}"
                      class="img-thumbnail"
@@ -84,10 +105,10 @@
                         <strong>Additional Note: </strong>{{ ad_item.additional_note|linebreaksbr }}
                     </p>
 
-                    <div class="card-footer">Posted by <a href="{% url 'advertiser-profile' ad_item.user.slug %}">
-                        {{ ad_item.user.name }}</a>,
-                        {{ ad_item.date_posted|timesince }}
-                        ago
+                    <div class="card-footer">
+                        <p>Posted by
+                            <b>{{ ad_item.advertiser.user.name }}</b>,
+                            {{ ad_item.date_posted|timesince }} ago</p>
                     </div>
 
                 </div>

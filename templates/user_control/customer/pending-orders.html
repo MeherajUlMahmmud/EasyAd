@@ -28,7 +28,7 @@
                         <!-- Modal -->
                     <div
                             class="modal fade"
-                            id="exampleModal"
+                            id="modal-payment-{{ order_item.id }}"
                             tabindex="-1"
                             aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
@@ -78,7 +78,7 @@
                                     class="btn btn-danger mb-3"
                                     data-mdb-ripple-color="#000000"
                                     data-mdb-toggle="modal"
-                                    data-mdb-target="#exampleModal">Cancel Order
+                                    data-mdb-target="#modal-payment-{{ order_item.id }}">Cancel Order
                             </button>
 
                         </div>

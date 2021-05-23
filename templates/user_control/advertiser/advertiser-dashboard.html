@@ -6,13 +6,15 @@
 
 {% block content %}
 <div class="container">
+    <a class="btn btn-success btn-lg mt-3 rounded" href="{% url 'post-ad' %}">
+        <i class="fas fa-plus me-2"></i>Post New Ad</a>
     <div class="row">
-        <div class="col-md-8 mt-4">
+        <div class="col-12 mt-4">
 
             <div class="row row-cols-1 row-cols-md-2 g-4">
                 {% if ad_list %}
                 {% for ad_item in ad_list %}
-                <div class="col">
+                <div class="col-auto">
                     <div class="card">
                         <div class="bg-image">
 
@@ -20,13 +22,15 @@
                             <img
                                     src="{{ ad_item.image.url }}"
                                     class="card-img-top"
-                                    alt="..."
+                                    alt="Ad ID {{ ad_item.id }}"
+                                    height="250px"
                             />
                             {% else %}
                             <img
                                     src="{% static 'assets/images/placeholder.png' %}"
                                     class="card-img-top"
-                                    alt="..."
+                                    alt="Ad ID {{ ad_item.id }}"
+                                    height="250px"
                             />
                             {% endif %}
 
@@ -68,50 +72,6 @@
                 <p class="mt-5 text-muted">You have not posted any ads yet.</p>
                 {% endif %}
             </div>
-
-        </div>
-
-        <!-- Sidebar Widgets Column -->
-        <div class="col-md-4 mt-4">
-            <a class="btn btn-success btn-block rounded" href="{% url 'post-ad' %}">
-                <i class="fas fa-plus me-2"></i>Post New Ad</a>
-
-            {% if pending_orders %}
-            <div class="col mt-3">
-                <div class="card border border-primary shadow-0 ">
-                    <div class="card-header h4">Orders to be checked</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            <span class="fs-1 h2">{{ pending_orders|length }}</span><span
-                                class="fs-5"> Unchecked Orders</span>
-                        </p>
-
-                        <a href="{% url 'advertiser-unchecked-orders' %}" type="button" class="btn btn-primary">View
-                            All<i
-                                class="fas fa-arrow-right ms-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
-            {% if unpaid_orders %}
-            <div class="col mt-3">
-                <div class="card border border-primary shadow-0 ">
-                    <div class="card-header h4">Unpaid Orders</div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            <span class="fs-1 h2">{{ unpaid_orders|length }}</span><span
-                                class="fs-5"> Unpaid Orders</span>
-                        </p>
-
-                        <a href="{% url 'unchecked-orders' %}" type="button" class="btn btn-primary">View All<i
-                                class="fas fa-arrow-right ms-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
 
         </div>
 
