@@ -116,8 +116,12 @@ def customer_signup_view(request):
 @login_required
 @show_to_advertiser(allowed_roles=['admin', 'is_advertiser'])
 def advertiser_dashboard(request):
-    ad_queryset = AdvertiseModel.objects.filter(user=request.user)
+    user = request.user
+    advertiser = AdvertiserModel.objects.get(user=user)
+    ad_queryset = AdvertiseModel.objects.filter(advertiser=advertiser)
+    # ad_queryset = AdvertiseModel.objects.all()
     ad_list = list(ad_queryset)
+    # print(ad_list)
 
     pending_orders = get_pending_orders(request)
     unpaid_orders = get_unpaid_orders(request)
@@ -149,11 +153,11 @@ def customer_dashboard(request):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
-    order_queryset = OrderModel.objects.all()
-    order_list = list(order_queryset)
-    ordered_ad_list = [order.advertise for order in order_list]
-
-    ad_list = [ad for ad in ad_list if ad not in ordered_ad_list]
+    # order_queryset = OrderModel.objects.all()
+    # order_list = list(order_queryset)
+    # ordered_ad_list = [order.advertise for order in order_list]
+    #
+    # ad_list = [ad for ad in ad_list if ad not in ordered_ad_list]
 
     search_keyword = request.GET.get('q')
     if search_keyword is not None:
@@ -186,11 +190,12 @@ def customer_dashboard(request):
 
 @login_required
 def customer_profile_view(request, slug):
-    ad_queryset = AdvertiseModel.objects.filter(is_active=True)
-    ad_list = list(ad_queryset)
-
+    # ad_queryset = AdvertiseModel.objects.filter(is_active=True)
+    # ad_list = list(ad_queryset)
     user = User.objects.get(slug=slug)
     profile = CustomerModel.objects.get(user=user)
+
+    orders = OrderModel.objects.filter(customer=profile, is_complete=True)
 
     pending_orders = get_pending_orders(request)
     unpaid_orders = get_unpaid_orders(request)
@@ -201,6 +206,7 @@ def customer_profile_view(request, slug):
     context = {
         'user': user,
         'profile': profile,
+        'orders': orders,
 
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
@@ -215,6 +221,8 @@ def customer_profile_view(request, slug):
 def advertiser_profile_view(request, slug):
     user = User.objects.get(slug=slug)
     profile = AdvertiserModel.objects.get(user=user)
+    ads = AdvertiseModel.objects.filter(advertiser=profile)
+    orders = OrderModel.objects.filter(advertise__in=list(ads), is_complete=True)
 
     pending_orders = get_pending_orders(request)
     unpaid_orders = get_unpaid_orders(request)
@@ -225,6 +233,8 @@ def advertiser_profile_view(request, slug):
     context = {
         'user': user,
         'profile': profile,
+        'ads': ads,
+        'orders': orders,
 
         'pending_orders': pending_orders,
         'unpaid_orders': unpaid_orders,
