@@ -69,7 +69,6 @@ class AdvertiserModel(models.Model):
     address = models.TextField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=255, null=True, blank=True)
     website = models.CharField(max_length=255, null=True, blank=True)
-    totalViewCount = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return self.user.name
@@ -79,7 +78,6 @@ class CustomerModel(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     phone = models.CharField(max_length=255, null=True, blank=True)
-    totalViewCount = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.user.name
