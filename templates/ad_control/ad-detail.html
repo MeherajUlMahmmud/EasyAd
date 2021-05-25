@@ -56,14 +56,14 @@
 
             <div class="row">
 
-                {% if request.user == ad_item.user %}
+                {% if request.user == ad_item.advertiser.user %}
                 <div class="col-6">
                     <a href="{% url 'update-ad' ad_item.id %}" class="btn btn-block btn-primary btn-md">Update
                         Ad</a>
                 </div>
                 <div class="col-6">
                     <a href="#"
-                       class="btn btn-block btn-outline-danger btn-md">Delete Ad
+                       class="btn btn-block btn-danger btn-md">Delete Ad
                     </a>
                 </div>
 
@@ -72,7 +72,7 @@
                 {% if ad_item.is_active %}
                 <div class="col-12">
                     <form method="GET">
-                        <input class="btn btn-block btn-outline-danger btn-md" name="deactivateAd" type="submit"
+                        <input class="btn btn-block btn-danger btn-md" name="deactivateAd" type="submit"
                                value="Deactivate Ad"/>
                     </form>
                 </div>
@@ -87,30 +87,16 @@
 
                 {% else %}
                 <div class="col-md-12">
-                    <!--                    <div class="card mb-3">-->
-                    <!--                        <div class="card-body">-->
-                    <!--                            <h5 class="card-title">Contact {{ ad_item.advertisement_type }} Owner</h5>-->
-                    <!--                            <p class="card-text">-->
-                    <!--                                <strong>Phone: </strong>-->
-                    <!--                                <a href="tel:{{ ad_item.user.advertisermodel.phone }}">-->
-                    <!--                                    {{ ad_item.user.advertisermodel.phone }}</a><br/>-->
-                    <!--                                <strong>Email: </strong>-->
-                    <!--                                <a href="mailto:{{ ad_item.user.email }}">{{ ad_item.user.email }}</a>-->
-                    <!--                            </p>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
 
                     <form method="GET" action="">
                         <div class="col-12">
-                            {% if is_ordered %}
-                            <!--                            <button class="btn btn-block btn-outline-danger" name="cancelOrder"-->
-                            <!--                                    type="submit">Cancel Order-->
-                            <!--                            </button>-->
 
+                            {% if is_ordered %}
                             <p class="note note-info">
                                 You have an incomplete order for this Ad. Wait until the order
                                 is complete to order this Ad again. Thank You
                             </p>
+
                             {% else %}
                             <a class="btn btn-block btn-primary" href="{% url 'confirm-order' ad_item.id %}">
                                 Order Now
