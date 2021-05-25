@@ -107,16 +107,16 @@ def ad_detail_view(request, pk):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
+    is_ordered = False
     if request.user.is_customer:
         customer = CustomerModel.objects.get(user=request.user)
+        orders = OrderModel.objects.filter(advertise=ad_item, customer=customer)
 
-    is_ordered = False
-    try:
-        order = OrderModel.objects.get(advertise=ad_item, customer=customer)
-    except:
-        order = None
-    if order is not None and not order.is_complete:
-        is_ordered = True
+    if orders is not None:
+        for order in orders:
+            if not order.is_complete:
+                is_ordered = True
+                break
 
     location_link = "https://maps.google.com/maps?width=100%25&amp;height=450&amp;hl=en&amp;q="
 
