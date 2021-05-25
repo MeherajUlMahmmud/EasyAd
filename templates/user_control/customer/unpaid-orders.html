@@ -98,6 +98,12 @@
                     {% else %}
                     <p class="note-success">Transaction ID Submitted. Waiting for approval.</p>
                     {% endif %}
+                    <a href="{% url 'order-details' order_item.id %}"
+                                    type="button"
+                                    class="btn btn-outline-primary mb-3"
+                                    data-mdb-ripple-color="#">
+                        Order Details
+                    </a>
 
                     <div class="card-footer">
                         <p class="fs-6">Ordered: {{ order_item.date_created|timesince }} ago</p>
