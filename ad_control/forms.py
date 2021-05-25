@@ -29,7 +29,7 @@ class PostAdForm(ModelForm):
     class Meta:
         model = AdvertiseModel
         fields = '__all__'
-        exclude = ['user', 'is_active']
+        exclude = ['advertiser', 'is_active']
 
 
 class ConfirmOrderForm(ModelForm):
