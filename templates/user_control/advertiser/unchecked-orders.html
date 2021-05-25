@@ -41,7 +41,7 @@
                         {% endif %}
 
 
-                        <!-- Modal -->
+                    <!-- Modal -->
                     <div
                             class="modal fade"
                             id="modal-payment-{{ order_item.id }}"
@@ -71,6 +71,7 @@
                             </div>
                         </div>
                     </div>
+
                     </p>
 
                     <div class="row">
@@ -86,6 +87,7 @@
                         </div>
                         <div class="col-6">
                             <form method="get">
+                                <input name="orderID" type="text" value="{{ order_item.id }}" hidden/>
                                 <input
                                         type="submit"
                                         name="rejectOrder"
