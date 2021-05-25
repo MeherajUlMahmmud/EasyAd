@@ -58,8 +58,9 @@
 
                 {% if request.user == ad_item.advertiser.user %}
                 <div class="col-6">
-                    <a href="{% url 'update-ad' ad_item.id %}" class="btn btn-block btn-primary btn-md">Update
-                        Ad</a>
+                    <a href="{% url 'update-ad' ad_item.id %}" class="btn btn-block btn-primary btn-md">
+                        Update Ad
+                    </a>
                 </div>
                 <div class="col-6">
                     <a href="#"
@@ -79,7 +80,7 @@
                 {% else %}
                 <div class="col-12">
                     <form method="GET">
-                        <input class="btn btn-block btn-outline-success btn-md" name="activateAd" type="submit"
+                        <input class="btn btn-block btn-success btn-md" name="activateAd" type="submit"
                                value="Activate Ad"/>
                     </form>
                 </div>
