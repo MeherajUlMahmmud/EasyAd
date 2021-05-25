@@ -107,7 +107,8 @@ def ad_detail_view(request, pk):
     running_ads = get_running_ads(request)
     finished_ads = get_finished_ads(request)
 
-    customer = CustomerModel.objects.get(user=request.user)
+    if request.user.is_customer:
+        customer = CustomerModel.objects.get(user=request.user)
 
     is_ordered = False
     try:
