@@ -66,8 +66,8 @@ def advertiser_signup_view(request):
             user = authenticate(request, email=email, password=password)
             slug_str = "%s %s" % (user.name, user.id)
             user.slug = slugify(slug_str)
+            user.is_advertiser = True
             user.save()
-
 
             AdvertiserModel.objects.create(user=user)
             login(request, user)
@@ -97,8 +97,8 @@ def customer_signup_view(request):
             user = authenticate(request, email=email, password=password)
             slug_str = "%s %s" % (user.name, user.id)
             user.slug = slugify(slug_str)
+            user.is_customer = True
             user.save()
-
 
             CustomerModel.objects.create(user=user)
             login(request, user)

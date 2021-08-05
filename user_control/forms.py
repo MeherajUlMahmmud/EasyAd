@@ -29,12 +29,11 @@ class AdvertiserRegistrationForm(UserCreationForm):
         widget=forms.PasswordInput(),
         help_text='Password must contain at least 8 character including numeric values',
     )
-    is_advertiser = forms.BooleanField(initial=True)
     check = forms.BooleanField(required=True)
 
     class Meta:
         model = User
-        fields = ("name", "email", "password1", "password2", "is_advertiser", "check")
+        fields = ("name", "email", "password1", "password2", "check")
 
 
 class CustomerRegistrationForm(UserCreationForm):
@@ -45,12 +44,11 @@ class CustomerRegistrationForm(UserCreationForm):
         widget=forms.PasswordInput(),
         help_text='Password must contain at least 8 character including numeric values',
     )
-    is_customer = forms.BooleanField(initial=True)
     check = forms.BooleanField(required=True)
 
     class Meta:
         model = User
-        fields = ("name", "email", "password1", "password2", "is_customer", "check")
+        fields = ("name", "email", "password1", "password2", "check")
 
 
 class AdvertiserEditProfileForm(ModelForm):
