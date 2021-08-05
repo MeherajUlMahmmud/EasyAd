@@ -67,6 +67,8 @@ def advertiser_signup_view(request):
             slug_str = "%s %s" % (user.name, user.id)
             user.slug = slugify(slug_str)
             user.save()
+
+
             AdvertiserModel.objects.create(user=user)
             login(request, user)
             return redirect('advertiser-dashboard')
@@ -96,6 +98,8 @@ def customer_signup_view(request):
             slug_str = "%s %s" % (user.name, user.id)
             user.slug = slugify(slug_str)
             user.save()
+
+
             CustomerModel.objects.create(user=user)
             login(request, user)
             return redirect('customer-dashboard')
