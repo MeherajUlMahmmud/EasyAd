@@ -3,32 +3,35 @@ from user_control.models import AdvertiserModel, CustomerModel
 
 
 class AdvertiseModel(models.Model):
-    ADVERTISEMENT_TYPE_CHOICES = [
-        ('Bill Board', 'Bill Board'),
-        ('Vehicle', 'Vehicle'),
-    ]
-
-    PRICE_RATE_TYPE_CHOICES = [
-        ('Day', 'Day'),
-        ('Month', 'Month'),
-    ]
-
-    SIZE_SCALE_TYPE_CHOICES = [
-        ('Inches', 'Inches'),
-        ('Feet', 'Feet'),
-        ('Meter', 'Meter'),
-    ]
+    # ADVERTISEMENT_TYPE_CHOICES = [
+    #     ('Bill Board', 'Bill Board'),
+    #     ('Vehicle', 'Vehicle'),
+    # ]
+    #
+    # PRICE_RATE_TYPE_CHOICES = [
+    #     ('Day', 'Day'),
+    #     ('Month', 'Month'),
+    # ]
+    #
+    # SIZE_SCALE_TYPE_CHOICES = [
+    #     ('Inches', 'Inches'),
+    #     ('Feet', 'Feet'),
+    #     ('Meter', 'Meter'),
+    # ]
 
     advertiser = models.ForeignKey(AdvertiserModel, null=True, blank=True, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     location = models.CharField(max_length=255)
     facing = models.CharField(max_length=255, null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    price_rate = models.CharField(max_length=30, choices=PRICE_RATE_TYPE_CHOICES)
+    # price_rate = models.CharField(max_length=30, choices=PRICE_RATE_TYPE_CHOICES)
+    price_rate = models.CharField(max_length=30)
     height = models.DecimalField(max_digits=5, decimal_places=2)
     width = models.DecimalField(max_digits=5, decimal_places=2)
-    size_scale = models.CharField(max_length=30, choices=SIZE_SCALE_TYPE_CHOICES)
-    advertisement_type = models.CharField(max_length=30, choices=ADVERTISEMENT_TYPE_CHOICES)
+    # size_scale = models.CharField(max_length=30, choices=SIZE_SCALE_TYPE_CHOICES)
+    size_scale = models.CharField(max_length=30)
+    # advertisement_type = models.CharField(max_length=30, choices=ADVERTISEMENT_TYPE_CHOICES)
+    advertisement_type = models.CharField(max_length=30)
     additional_note = models.TextField(null=True, blank=True)
     date_posted = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
