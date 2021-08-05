@@ -98,6 +98,19 @@ def update_ad_view(request, pk):
 
 
 @login_required
+def delete_ad_view(request, pk):
+    ad = AdvertiseModel.objects.get(id=pk)
+    if request.method == 'POST':
+        ad.delete()
+        return redirect('advertiser-dashboard')
+
+    context = {
+        'item': ad,
+    }
+    return render(request, 'ad_control/delete-ad.html', context)
+
+
+@login_required
 def ad_detail_view(request, pk):
     ad_item = AdvertiseModel.objects.get(id=pk)
 
